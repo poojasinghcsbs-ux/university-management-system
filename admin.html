@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>RGPV Admin Dashboard</title>
+
+    <link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="admin-logo">
+            <h2>RGPV</h2>
+            <p>Admin Panel</p>
+        </div>
+
+        <nav class="admin-nav">
+
+            <a href="#" class="active">
+                🏠 Dashboard
+            </a>
+
+            <a href="#enquiries">
+                📩 Enquiries
+            </a>
+
+            <a href="#subscribers">
+                ✉️ Subscribers
+            </a>
+
+            <a href="indexx.html">
+                🌐 View Website
+            </a>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+
+    <main class="admin-main">
+
+        <!-- TOP BAR -->
+
+        <header class="admin-header">
+
+            <div>
+                <p class="small-heading">ADMINISTRATION</p>
+                <h1>Dashboard</h1>
+            </div>
+
+            <a href="indexx.html" class="website-btn">
+                View Website →
+            </a>
+
+        </header>
+
+
+        <!-- DASHBOARD CARDS -->
+
+        <section class="dashboard-cards">
+
+            <div class="dashboard-card">
+
+                <div class="dashboard-icon">
+                    📩
+                </div>
+
+                <div>
+                    <p>Total Enquiries</p>
+
+                    <h2 id="totalEnquiries">
+                        0
+                    </h2>
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-card">
+
+                <div class="dashboard-icon">
+                    ✉️
+                </div>
+
+                <div>
+                    <p>Subscribers</p>
+
+                    <h2 id="totalSubscribers">
+                        0
+                    </h2>
+                </div>
+
+            </div>
+
+
+            <div class="dashboard-card">
+
+                <div class="dashboard-icon">
+                    📅
+                </div>
+
+                <div>
+                    <p>Today's Enquiries</p>
+
+                    <h2 id="todayEnquiries">
+                        0
+                    </h2>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ENQUIRIES -->
+
+        <section class="admin-section" id="enquiries">
+
+            <div class="section-top">
+
+                <div>
+                    <p class="small-heading">
+                        STUDENT REQUESTS
+                    </p>
+
+                    <h2>
+                        Recent Enquiries
+                    </h2>
+                </div>
+
+
+                <div class="admin-actions">
+
+                    <input
+                        type="text"
+                        id="searchEnquiry"
+                        placeholder="Search enquiries...">
+
+                    <button
+                        type="button"
+                        id="clearEnquiries"
+                        class="clear-btn">
+
+                        Clear All
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Mobile</th>
+                            <th>Enquiry</th>
+                            <th>Message</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="enquiryTableBody">
+
+                        <!-- JavaScript will add enquiries here -->
+
+                    </tbody>
+
+                </table>
+
+
+                <div
+                    class="empty-message"
+                    id="noEnquiries">
+
+                    <span>📭</span>
+
+                    <h3>No enquiries yet</h3>
+
+                    <p>
+                        Submitted enquiries will appear here.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- NEWSLETTER SUBSCRIBERS -->
+
+        <section class="admin-section" id="subscribers">
+
+            <div class="section-top">
+
+                <div>
+
+                    <p class="small-heading">
+                        NEWSLETTER
+                    </p>
+
+                    <h2>
+                        Subscribers
+                    </h2>
+
+                </div>
+
+                <button
+                    type="button"
+                    id="clearSubscribers"
+                    class="clear-btn">
+
+                    Clear Subscribers
+
+                </button>
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>#</th>
+                            <th>Email Address</th>
+                            <th>Subscribed On</th>
+                            <th>Action</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="subscriberTableBody">
+
+                        <!-- JavaScript will add subscribers -->
+
+                    </tbody>
+
+                </table>
+
+
+                <div
+                    class="empty-message"
+                    id="noSubscribers">
+
+                    <span>📨</span>
+
+                    <h3>No subscribers yet</h3>
+
+                    <p>
+                        Newsletter subscribers will appear here.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- FOOTER -->
+
+        <footer class="admin-footer">
+
+            <p>
+                RGPV University Admin Dashboard |
+                Educational Project
+            </p>
+
+        </footer>
+
+    </main>
+
+
+    <!-- ENQUIRY DETAILS POPUP -->
+
+<div class="enquiry-modal" id="enquiryModal">
+
+    <div class="modal-box">
+
+        <button class="modal-close" id="modalClose">×</button>
+
+        <p class="small-heading">STUDENT REQUEST</p>
+        <h2>Enquiry Details</h2>
+
+        <div class="modal-details">
+
+            <div>
+                <span>Student Name</span>
+                <p id="modalName">-</p>
+            </div>
+
+            <div>
+                <span>Email Address</span>
+                <p id="modalEmail">-</p>
+            </div>
+
+            <div>
+                <span>Mobile Number</span>
+                <p id="modalMobile">-</p>
+            </div>
+
+            <div>
+                <span>Enquiry Type</span>
+                <p id="modalType">-</p>
+            </div>
+
+            <div>
+                <span>Date & Time</span>
+                <p id="modalDate">-</p>
+            </div>
+
+        </div>
+
+        <div class="modal-message">
+            <span>Student Message</span>
+            <p id="modalMessage">-</p>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="admin.js"></script>
+
+</body>
+
+</html>

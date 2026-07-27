@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>RGPV Admin Login</title>
+
+    <link rel="stylesheet" href="login.css">
+</head>
+
+
+<body>
+
+    <main class="login-page">
+
+
+        <!-- ==============================
+             LEFT BRANDING SECTION
+        =============================== -->
+
+        <section class="login-brand">
+
+            <div class="brand-overlay"></div>
+
+            <div class="brand-content">
+
+                <div class="university-badge">
+                    RGPV
+                </div>
+
+                <p class="brand-small">
+                    RAJIV GANDHI PROUDYOGIKI VISHWAVIDYALAYA
+                </p>
+
+                <h1>
+                    University
+                    <span>Administration Portal</span>
+                </h1>
+
+                <p class="brand-description">
+                    Secure access to student enquiries,
+                    newsletter subscribers and university
+                    administration services.
+                </p>
+
+
+                <div class="portal-features">
+
+                    <div class="portal-feature">
+
+                        <div class="feature-icon">
+                            ✓
+                        </div>
+
+                        <div>
+                            <h3>Enquiry Management</h3>
+                            <p>
+                                View and manage student enquiries.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="portal-feature">
+
+                        <div class="feature-icon">
+                            ✓
+                        </div>
+
+                        <div>
+                            <h3>Student Communication</h3>
+                            <p>
+                                Keep track of student requests
+                                and communication.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="portal-feature">
+
+                        <div class="feature-icon">
+                            ✓
+                        </div>
+
+                        <div>
+                            <h3>University Dashboard</h3>
+                            <p>
+                                Access important administration
+                                information from one place.
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==============================
+             RIGHT LOGIN SECTION
+        =============================== -->
+
+        <section class="login-section">
+
+
+            <!-- BACK TO WEBSITE -->
+
+            <a href="indexx.html"
+               class="back-website">
+
+                ← Back to University Website
+
+            </a>
+
+
+
+            <div class="login-wrapper">
+
+
+                <!-- TOP LOGO -->
+
+                <div class="mobile-logo">
+                    RGPV
+                </div>
+
+
+                <p class="login-small-heading">
+                    ADMINISTRATION PORTAL
+                </p>
+
+
+                <h2>
+                    Welcome Back
+                </h2>
+
+
+                <p class="login-description">
+                    Please enter your administrator credentials
+                    to access the dashboard.
+                </p>
+
+
+
+                <!-- ==============================
+                         LOGIN FORM
+                =============================== -->
+
+                <form id="loginForm">
+
+
+                    <!-- ADMIN ID -->
+
+                    <div class="form-group">
+
+                        <label for="adminId">
+                            Admin ID
+                        </label>
+
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                👤
+                            </span>
+
+                            <input
+                                type="text"
+                                id="adminId"
+                                placeholder="Enter your administrator ID"
+                                autocomplete="username">
+
+                        </div>
+
+
+                        <p
+                            class="login-error"
+                            id="adminIdError">
+                        </p>
+
+                    </div>
+
+
+
+                    <!-- PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label for="adminPassword">
+                            Password
+                        </label>
+
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                🔒
+                            </span>
+
+                            <input
+                                type="password"
+                                id="adminPassword"
+                                placeholder="Enter your password"
+                                autocomplete="current-password">
+
+
+                            <button
+                                type="button"
+                                class="password-toggle"
+                                id="passwordToggle"
+                                aria-label="Show or hide password">
+
+                                Show
+
+                            </button>
+
+                        </div>
+
+
+                        <p
+                            class="login-error"
+                            id="passwordError">
+                        </p>
+
+                    </div>
+
+
+
+                    <!-- OPTIONS -->
+
+                    <div class="login-options">
+
+                        <label class="remember">
+
+                            <input
+                                type="checkbox"
+                                id="rememberAdmin">
+
+                            <span>
+                                Remember me
+                            </span>
+
+                        </label>
+
+
+                        <button
+                            type="button"
+                            class="forgot-password"
+                            id="forgotPassword">
+
+                            Forgot Password?
+
+                        </button>
+
+                    </div>
+
+
+
+                    <!-- LOGIN BUTTON -->
+
+                    <button
+                        type="submit"
+                        class="login-button"
+                        id="loginButton">
+
+                        <span id="loginButtonText">
+                            Sign In to Dashboard
+                        </span>
+
+                        <span class="button-arrow">
+                            →
+                        </span>
+
+                    </button>
+
+
+
+                    <!-- LOGIN STATUS -->
+
+                    <div
+                        class="login-status"
+                        id="loginStatus">
+
+                        <div class="status-icon">
+                            ✓
+                        </div>
+
+                        <div>
+                            <strong>
+                                Login Successful
+                            </strong>
+
+                            <p>
+                                Redirecting to your dashboard...
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                </form>
+
+
+
+                <!-- SECURITY MESSAGE -->
+
+                <div class="security-message">
+
+                    <span>
+                        🔐
+                    </span>
+
+                    <p>
+                        This portal is intended for authorized
+                        university administrators only.
+                    </p>
+
+                </div>
+
+
+
+                <div class="login-footer">
+
+                    <p>
+                        Rajiv Gandhi Proudyogiki Vishwavidyalaya
+                    </p>
+
+                    <span>
+                        Bhopal, Madhya Pradesh
+                    </span>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+    <script src="login.js"></script>
+
+</body>
+
+</html>
