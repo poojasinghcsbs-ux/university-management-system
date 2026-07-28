@@ -17,7 +17,15 @@ The project focuses on creating a professional university website along with an 
 The current version demonstrates the frontend design and interactive functionality of the system.
 
 ---
+##  Project Demo
 
+Watch a walkthrough of the current frontend version of the University Management System.
+
+▶️ [Watch Project Demo](university-management-system-demo-compressed.mp4)
+
+> **Note:** This demo represents the current development version. Backend and database integration are planned for upcoming stages.
+
+---
 ##  Project Idea
 
 University websites contain a large amount of information such as academic programs, departments, admission details, notices, placement information, campus activities, and student enquiries.
