@@ -12,8 +12,6 @@
 
 <body>
 
-    <!-- SIDEBAR -->
-
     <aside class="sidebar">
 
         <div class="admin-logo">
@@ -35,20 +33,20 @@
                 ✉️ Subscribers
             </a>
 
-            <a href="indexx.html">
+            <a href="indexxx.html">
                 🌐 View Website
             </a>
+
+            <button type="button" class="logout-btn" id="logoutBtn">
+                ↪ Logout
+            </button>
 
         </nav>
 
     </aside>
 
 
-    <!-- MAIN CONTENT -->
-
     <main class="admin-main">
-
-        <!-- TOP BAR -->
 
         <header class="admin-header">
 
@@ -57,14 +55,12 @@
                 <h1>Dashboard</h1>
             </div>
 
-            <a href="indexx.html" class="website-btn">
+            <a href="indexxx.html" class="website-btn">
                 View Website →
             </a>
 
         </header>
 
-
-        <!-- DASHBOARD CARDS -->
 
         <section class="dashboard-cards">
 
@@ -76,10 +72,7 @@
 
                 <div>
                     <p>Total Enquiries</p>
-
-                    <h2 id="totalEnquiries">
-                        0
-                    </h2>
+                    <h2 id="totalEnquiries">0</h2>
                 </div>
 
             </div>
@@ -93,10 +86,7 @@
 
                 <div>
                     <p>Subscribers</p>
-
-                    <h2 id="totalSubscribers">
-                        0
-                    </h2>
+                    <h2 id="totalSubscribers">0</h2>
                 </div>
 
             </div>
@@ -110,18 +100,13 @@
 
                 <div>
                     <p>Today's Enquiries</p>
-
-                    <h2 id="todayEnquiries">
-                        0
-                    </h2>
+                    <h2 id="todayEnquiries">0</h2>
                 </div>
 
             </div>
 
         </section>
 
-
-        <!-- ENQUIRIES -->
 
         <section class="admin-section" id="enquiries">
 
@@ -149,9 +134,7 @@
                         type="button"
                         id="clearEnquiries"
                         class="clear-btn">
-
                         Clear All
-
                     </button>
 
                 </div>
@@ -179,17 +162,12 @@
 
 
                     <tbody id="enquiryTableBody">
-
-                        <!-- JavaScript will add enquiries here -->
-
                     </tbody>
 
                 </table>
 
 
-                <div
-                    class="empty-message"
-                    id="noEnquiries">
+                <div class="empty-message" id="noEnquiries">
 
                     <span>📭</span>
 
@@ -205,8 +183,6 @@
 
         </section>
 
-
-        <!-- NEWSLETTER SUBSCRIBERS -->
 
         <section class="admin-section" id="subscribers">
 
@@ -228,9 +204,7 @@
                     type="button"
                     id="clearSubscribers"
                     class="clear-btn">
-
                     Clear Subscribers
-
                 </button>
 
             </div>
@@ -253,17 +227,12 @@
 
 
                     <tbody id="subscriberTableBody">
-
-                        <!-- JavaScript will add subscribers -->
-
                     </tbody>
 
                 </table>
 
 
-                <div
-                    class="empty-message"
-                    id="noSubscribers">
+                <div class="empty-message" id="noSubscribers">
 
                     <span>📨</span>
 
@@ -280,8 +249,6 @@
         </section>
 
 
-        <!-- FOOTER -->
-
         <footer class="admin-footer">
 
             <p>
@@ -294,56 +261,74 @@
     </main>
 
 
-    <!-- ENQUIRY DETAILS POPUP -->
+    <div class="enquiry-modal" id="enquiryModal">
 
-<div class="enquiry-modal" id="enquiryModal">
+        <div class="modal-box">
 
-    <div class="modal-box">
+            <button
+                type="button"
+                class="modal-close"
+                id="modalClose">
+                ×
+            </button>
 
-        <button class="modal-close" id="modalClose">×</button>
+            <p class="small-heading">
+                STUDENT REQUEST
+            </p>
 
-        <p class="small-heading">STUDENT REQUEST</p>
-        <h2>Enquiry Details</h2>
+            <h2>
+                Enquiry Details
+            </h2>
 
-        <div class="modal-details">
 
-            <div>
-                <span>Student Name</span>
-                <p id="modalName">-</p>
+            <div class="modal-details">
+
+                <div>
+                    <span>Student Name</span>
+                    <p id="modalName">-</p>
+                </div>
+
+                <div>
+                    <span>Email Address</span>
+                    <p id="modalEmail">-</p>
+                </div>
+
+                <div>
+                    <span>Mobile Number</span>
+                    <p id="modalMobile">-</p>
+                </div>
+
+                <div>
+                    <span>Enquiry Type</span>
+                    <p id="modalType">-</p>
+                </div>
+
+                <div>
+                    <span>Date & Time</span>
+                    <p id="modalDate">-</p>
+                </div>
+
             </div>
 
-            <div>
-                <span>Email Address</span>
-                <p id="modalEmail">-</p>
+
+            <div class="modal-message">
+
+                <span>
+                    Student Message
+                </span>
+
+                <p id="modalMessage">
+                    -
+                </p>
+
             </div>
 
-            <div>
-                <span>Mobile Number</span>
-                <p id="modalMobile">-</p>
-            </div>
-
-            <div>
-                <span>Enquiry Type</span>
-                <p id="modalType">-</p>
-            </div>
-
-            <div>
-                <span>Date & Time</span>
-                <p id="modalDate">-</p>
-            </div>
-
-        </div>
-
-        <div class="modal-message">
-            <span>Student Message</span>
-            <p id="modalMessage">-</p>
         </div>
 
     </div>
 
-</div>
 
-<script src="admin.js"></script>
+    <script src="admin.js"></script>
 
 </body>
 

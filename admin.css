@@ -804,3 +804,34 @@ tbody tr:hover {
         font-size: 25px;
     }
 }
+.logout-btn {
+    width: 100%;
+    margin-top: 12px;
+    padding: 12px 14px;
+
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 7px;
+
+    background: rgba(190, 55, 55, 0.15);
+    color: #ffdede;
+
+    font-size: 14px;
+    text-align: left;
+
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.logout-btn:hover {
+    background: #b63838;
+    color: white;
+    transform: translateX(4px);
+}
+
+@media (max-width: 650px) {
+    .logout-btn {
+        width: auto;
+        margin-top: 0;
+        padding: 8px 12px;
+    }
+}
