@@ -1,34 +1,18 @@
-const adminLoggedIn = sessionStorage.getItem("rgpvAdminLoggedIn");
+const API_BASE_URL = "http://localhost:8080/api";
+const adminToken = sessionStorage.getItem("rgpvAdminToken");
 
-if (adminLoggedIn !== "true") {
+if (!adminToken) {
     window.location.replace("login.html");
 }
 
-
-function getEnquiries() {
-    try {
-        return JSON.parse(localStorage.getItem("rgpvEnquiries")) || [];
-    } catch (error) {
-        return [];
-    }
-}
-
-
-function getSubscribers() {
-    try {
-        return JSON.parse(localStorage.getItem("rgpvSubscribers")) || [];
-    } catch (error) {
-        return [];
-    }
-}
-
+let currentEnquiries = [];
+let currentSubscribers = [];
 
 function escapeHTML(value) {
-    const div = document.createElement("div");
-    div.textContent = String(value ?? "");
-    return div.innerHTML;
+    const element = document.createElement("div");
+    element.textContent = String(value ?? "");
+    return element.innerHTML;
 }
-
 
 function formatEnquiryType(type) {
     const types = {
@@ -38,448 +22,249 @@ function formatEnquiryType(type) {
         placement: "Placement",
         other: "Other"
     };
-
     return types[type] || type || "-";
 }
 
+function formatDateTime(value) {
+    if (!value) {
+        return "-";
+    }
+    return new Intl.DateTimeFormat("en-IN", {
+        dateStyle: "medium",
+        timeStyle: "short"
+    }).format(new Date(value));
+}
 
-function updateDashboard() {
-    const enquiries = getEnquiries();
-    const subscribers = getSubscribers();
+async function apiRequest(path, options = {}) {
+    const headers = {
+        Authorization: `Bearer ${adminToken}`,
+        ...(options.body ? { "Content-Type": "application/json" } : {}),
+        ...(options.headers || {})
+    };
 
-    const totalEnquiries = document.getElementById("totalEnquiries");
-    const totalSubscribers = document.getElementById("totalSubscribers");
-    const todayEnquiries = document.getElementById("todayEnquiries");
+    const response = await fetch(`${API_BASE_URL}${path}`, { ...options, headers });
+    const hasJson = response.headers.get("content-type")?.includes("application/json");
+    const data = hasJson ? await response.json() : null;
 
-    if (totalEnquiries) {
-        totalEnquiries.textContent = enquiries.length;
+    if (response.status === 401) {
+        sessionStorage.removeItem("rgpvAdminToken");
+        sessionStorage.removeItem("rgpvAdminLoggedIn");
+        window.location.replace("login.html");
+        throw new Error("Your admin session has expired.");
     }
 
-    if (totalSubscribers) {
-        totalSubscribers.textContent = subscribers.length;
+    if (!response.ok) {
+        throw new Error(data?.message || "Unable to complete this request.");
     }
+    return data;
+}
 
-    const today = new Date().toLocaleDateString("en-IN");
+async function refreshDashboard() {
+    const dashboard = await apiRequest("/admin/dashboard");
+    setText("totalEnquiries", dashboard.totalEnquiries);
+    setText("totalSubscribers", dashboard.totalSubscribers);
+    setText("todayEnquiries", dashboard.todayEnquiries);
+}
 
-    const todayCount = enquiries.filter(function (enquiry) {
-        return enquiry.date === today;
-    }).length;
+async function loadEnquiries(search = "") {
+    const query = search.trim() ? `?search=${encodeURIComponent(search.trim())}` : "";
+    currentEnquiries = await apiRequest(`/admin/enquiries${query}`);
+    displayEnquiries();
+}
 
-    if (todayEnquiries) {
-        todayEnquiries.textContent = todayCount;
+async function loadSubscribers() {
+    currentSubscribers = await apiRequest("/admin/subscribers");
+    displaySubscribers();
+}
+
+function setText(id, value) {
+    const element = document.getElementById(id);
+    if (element) {
+        element.textContent = value;
     }
 }
 
-
-function displayEnquiries(searchText = "") {
-    const enquiries = getEnquiries();
-
+function displayEnquiries() {
     const tableBody = document.getElementById("enquiryTableBody");
     const noEnquiries = document.getElementById("noEnquiries");
-
     if (!tableBody || !noEnquiries) {
         return;
     }
 
     tableBody.innerHTML = "";
+    noEnquiries.classList.toggle("show-empty", currentEnquiries.length === 0);
 
-    const search = searchText.trim().toLowerCase();
-
-    const filteredEnquiries = enquiries.filter(function (enquiry) {
-        const searchableText = `
-            ${enquiry.name || ""}
-            ${enquiry.email || ""}
-            ${enquiry.mobile || ""}
-            ${enquiry.enquiryType || ""}
-            ${enquiry.message || ""}
-            ${enquiry.date || ""}
-        `.toLowerCase();
-
-        return searchableText.includes(search);
-    });
-
-
-    if (filteredEnquiries.length === 0) {
-        noEnquiries.classList.add("show-empty");
-        return;
-    }
-
-    noEnquiries.classList.remove("show-empty");
-
-    const reversedEnquiries = [...filteredEnquiries].reverse();
-
-
-    reversedEnquiries.forEach(function (enquiry) {
+    currentEnquiries.forEach((enquiry) => {
         const row = document.createElement("tr");
-
         row.innerHTML = `
+            <td><strong>${escapeHTML(enquiry.fullName)}</strong></td>
+            <td>${escapeHTML(enquiry.email)}</td>
+            <td>${escapeHTML(enquiry.mobile)}</td>
+            <td><span class="enquiry-badge">${escapeHTML(formatEnquiryType(enquiry.enquiryType))}</span></td>
+            <td class="message-cell">${escapeHTML(enquiry.message)}</td>
+            <td>${escapeHTML(formatDateTime(enquiry.createdAt))}</td>
             <td>
-                <strong>${escapeHTML(enquiry.name)}</strong>
-            </td>
-
-            <td>
-                ${escapeHTML(enquiry.email)}
-            </td>
-
-            <td>
-                ${escapeHTML(enquiry.mobile)}
-            </td>
-
-            <td>
-                <span class="enquiry-badge">
-                    ${escapeHTML(formatEnquiryType(enquiry.enquiryType))}
-                </span>
-            </td>
-
-            <td class="message-cell">
-                ${escapeHTML(enquiry.message)}
-            </td>
-
-            <td>
-                ${escapeHTML(enquiry.date)}
-                <br>
-                <small>${escapeHTML(enquiry.time)}</small>
-            </td>
-
-            <td>
-                <button
-                    type="button"
-                    class="view-btn"
-                    data-id="${enquiry.id}">
-                    View Details
-                </button>
-
-                <button
-                    type="button"
-                    class="delete-btn"
-                    data-id="${enquiry.id}">
-                    Delete
-                </button>
-            </td>
-        `;
-
+                <button type="button" class="view-btn" data-id="${enquiry.id}">View Details</button>
+                <button type="button" class="delete-btn" data-id="${enquiry.id}">Delete</button>
+            </td>`;
         tableBody.appendChild(row);
     });
 
-
-    document
-        .querySelectorAll("#enquiryTableBody .view-btn")
-        .forEach(function (button) {
-
-            button.addEventListener("click", function () {
-                const id = Number(button.dataset.id);
-                openEnquiryModal(id);
-            });
-
-        });
-
-
-    document
-        .querySelectorAll("#enquiryTableBody .delete-btn")
-        .forEach(function (button) {
-
-            button.addEventListener("click", function () {
-                const id = Number(button.dataset.id);
-                deleteEnquiry(id);
-            });
-
-        });
-}
-
-
-function deleteEnquiry(id) {
-    const confirmation = confirm(
-        "Are you sure you want to delete this enquiry?"
-    );
-
-    if (!confirmation) {
-        return;
-    }
-
-    let enquiries = getEnquiries();
-
-    enquiries = enquiries.filter(function (enquiry) {
-        return enquiry.id !== id;
+    tableBody.querySelectorAll(".view-btn").forEach((button) => {
+        button.addEventListener("click", () => openEnquiryModal(Number(button.dataset.id)));
     });
-
-    localStorage.setItem(
-        "rgpvEnquiries",
-        JSON.stringify(enquiries)
-    );
-
-    displayEnquiries();
-    updateDashboard();
+    tableBody.querySelectorAll(".delete-btn").forEach((button) => {
+        button.addEventListener("click", () => deleteEnquiry(Number(button.dataset.id)));
+    });
 }
-
 
 function displaySubscribers() {
-    const subscribers = getSubscribers();
-
     const tableBody = document.getElementById("subscriberTableBody");
     const noSubscribers = document.getElementById("noSubscribers");
-
     if (!tableBody || !noSubscribers) {
         return;
     }
 
     tableBody.innerHTML = "";
+    noSubscribers.classList.toggle("show-empty", currentSubscribers.length === 0);
 
-
-    if (subscribers.length === 0) {
-        noSubscribers.classList.add("show-empty");
-        return;
-    }
-
-    noSubscribers.classList.remove("show-empty");
-
-    const reversedSubscribers = [...subscribers].reverse();
-
-
-    reversedSubscribers.forEach(function (subscriber, index) {
+    currentSubscribers.forEach((subscriber, index) => {
         const row = document.createElement("tr");
-
         row.innerHTML = `
-            <td>
-                ${index + 1}
-            </td>
-
-            <td>
-                <strong>
-                    ${escapeHTML(subscriber.email)}
-                </strong>
-            </td>
-
-            <td>
-                ${escapeHTML(subscriber.date)}
-            </td>
-
-            <td>
-                <button
-                    type="button"
-                    class="delete-btn subscriber-delete"
-                    data-id="${subscriber.id}">
-                    Delete
-                </button>
-            </td>
-        `;
-
+            <td>${index + 1}</td>
+            <td><strong>${escapeHTML(subscriber.email)}</strong></td>
+            <td>${escapeHTML(formatDateTime(subscriber.subscribedAt))}</td>
+            <td><button type="button" class="delete-btn subscriber-delete" data-id="${subscriber.id}">Delete</button></td>`;
         tableBody.appendChild(row);
     });
 
-
-    document
-        .querySelectorAll(".subscriber-delete")
-        .forEach(function (button) {
-
-            button.addEventListener("click", function () {
-                const id = Number(button.dataset.id);
-                deleteSubscriber(id);
-            });
-
-        });
+    tableBody.querySelectorAll(".subscriber-delete").forEach((button) => {
+        button.addEventListener("click", () => deleteSubscriber(Number(button.dataset.id)));
+    });
 }
 
-
-function deleteSubscriber(id) {
-    const confirmation = confirm(
-        "Delete this subscriber?"
-    );
-
-    if (!confirmation) {
+async function deleteEnquiry(id) {
+    if (!confirm("Are you sure you want to delete this enquiry?")) {
         return;
     }
-
-    let subscribers = getSubscribers();
-
-    subscribers = subscribers.filter(function (subscriber) {
-        return subscriber.id !== id;
-    });
-
-    localStorage.setItem(
-        "rgpvSubscribers",
-        JSON.stringify(subscribers)
-    );
-
-    displaySubscribers();
-    updateDashboard();
+    try {
+        await apiRequest(`/admin/enquiries/${id}`, { method: "DELETE" });
+        await Promise.all([refreshDashboard(), loadEnquiries()]);
+    } catch (error) {
+        alert(error.message);
+    }
 }
 
+async function deleteSubscriber(id) {
+    if (!confirm("Delete this subscriber?")) {
+        return;
+    }
+    try {
+        await apiRequest(`/admin/subscribers/${id}`, { method: "DELETE" });
+        await Promise.all([refreshDashboard(), loadSubscribers()]);
+    } catch (error) {
+        alert(error.message);
+    }
+}
 
 function openEnquiryModal(id) {
-    const enquiries = getEnquiries();
-
-    const enquiry = enquiries.find(function (item) {
-        return item.id === id;
-    });
-
+    const enquiry = currentEnquiries.find((item) => item.id === id);
     const enquiryModal = document.getElementById("enquiryModal");
-
     if (!enquiry || !enquiryModal) {
         return;
     }
 
-    document.getElementById("modalName").textContent =
-        enquiry.name || "-";
-
-    document.getElementById("modalEmail").textContent =
-        enquiry.email || "-";
-
-    document.getElementById("modalMobile").textContent =
-        enquiry.mobile || "-";
-
-    document.getElementById("modalType").textContent =
-        formatEnquiryType(enquiry.enquiryType);
-
-    document.getElementById("modalDate").textContent =
-        (enquiry.date || "-") +
-        " • " +
-        (enquiry.time || "-");
-
-    document.getElementById("modalMessage").textContent =
-        enquiry.message || "-";
-
+    setText("modalName", enquiry.fullName);
+    setText("modalEmail", enquiry.email);
+    setText("modalMobile", enquiry.mobile);
+    setText("modalType", `${formatEnquiryType(enquiry.enquiryType)} (${enquiry.status})`);
+    setText("modalDate", formatDateTime(enquiry.createdAt));
+    setText("modalMessage", enquiry.message);
     enquiryModal.classList.add("show-modal");
-
     document.body.style.overflow = "hidden";
 }
 
-
 function closeEnquiryModal() {
     const enquiryModal = document.getElementById("enquiryModal");
-
-    if (!enquiryModal) {
-        return;
+    if (enquiryModal) {
+        enquiryModal.classList.remove("show-modal");
     }
-
-    enquiryModal.classList.remove("show-modal");
-
     document.body.style.overflow = "";
 }
 
+async function clearEnquiries() {
+    if (!currentEnquiries.length) {
+        alert("There are no enquiries to clear.");
+        return;
+    }
+    if (!confirm("Delete all enquiries? This cannot be undone.")) {
+        return;
+    }
+    try {
+        await Promise.all(currentEnquiries.map((enquiry) => apiRequest(`/admin/enquiries/${enquiry.id}`, { method: "DELETE" })));
+        await Promise.all([refreshDashboard(), loadEnquiries()]);
+    } catch (error) {
+        alert(error.message);
+    }
+}
 
-document.addEventListener("DOMContentLoaded", function () {
+async function clearSubscribers() {
+    if (!currentSubscribers.length) {
+        alert("There are no subscribers to clear.");
+        return;
+    }
+    if (!confirm("Delete all newsletter subscribers?")) {
+        return;
+    }
+    try {
+        await Promise.all(currentSubscribers.map((subscriber) => apiRequest(`/admin/subscribers/${subscriber.id}`, { method: "DELETE" })));
+        await Promise.all([refreshDashboard(), loadSubscribers()]);
+    } catch (error) {
+        alert(error.message);
+    }
+}
 
-    updateDashboard();
-    displayEnquiries();
-    displaySubscribers();
+document.addEventListener("DOMContentLoaded", async () => {
+    const searchEnquiry = document.getElementById("searchEnquiry");
+    const clearEnquiriesButton = document.getElementById("clearEnquiries");
+    const clearSubscribersButton = document.getElementById("clearSubscribers");
+    const modalClose = document.getElementById("modalClose");
+    const enquiryModal = document.getElementById("enquiryModal");
+    const logoutButton = document.getElementById("logoutBtn");
 
-
-    const searchEnquiry =
-        document.getElementById("searchEnquiry");
-
-    const clearEnquiries =
-        document.getElementById("clearEnquiries");
-
-    const clearSubscribers =
-        document.getElementById("clearSubscribers");
-
-    const modalClose =
-        document.getElementById("modalClose");
-
-    const enquiryModal =
-        document.getElementById("enquiryModal");
-
-    const logoutBtn =
-        document.getElementById("logoutBtn");
-
-
-    if (searchEnquiry) {
-        searchEnquiry.addEventListener("input", function () {
-            displayEnquiries(searchEnquiry.value);
-        });
+    try {
+        await Promise.all([refreshDashboard(), loadEnquiries(), loadSubscribers()]);
+    } catch (error) {
+        alert(error.message || "Unable to load dashboard data.");
     }
 
+    let searchTimer;
+    searchEnquiry?.addEventListener("input", () => {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(() => {
+            loadEnquiries(searchEnquiry.value).catch((error) => alert(error.message));
+        }, 250);
+    });
 
-    if (clearEnquiries) {
-        clearEnquiries.addEventListener("click", function () {
-
-            const enquiries = getEnquiries();
-
-            if (enquiries.length === 0) {
-                alert("There are no enquiries to clear.");
-                return;
-            }
-
-            const confirmation = confirm(
-                "Delete all enquiries? This cannot be undone."
-            );
-
-            if (confirmation) {
-                localStorage.removeItem("rgpvEnquiries");
-
-                displayEnquiries();
-                updateDashboard();
-            }
-
-        });
-    }
-
-
-    if (clearSubscribers) {
-        clearSubscribers.addEventListener("click", function () {
-
-            const subscribers = getSubscribers();
-
-            if (subscribers.length === 0) {
-                alert("There are no subscribers to clear.");
-                return;
-            }
-
-            const confirmation = confirm(
-                "Delete all newsletter subscribers?"
-            );
-
-            if (confirmation) {
-                localStorage.removeItem("rgpvSubscribers");
-
-                displaySubscribers();
-                updateDashboard();
-            }
-
-        });
-    }
-
-
-    if (modalClose) {
-        modalClose.addEventListener("click", function () {
+    clearEnquiriesButton?.addEventListener("click", clearEnquiries);
+    clearSubscribersButton?.addEventListener("click", clearSubscribers);
+    modalClose?.addEventListener("click", closeEnquiryModal);
+    enquiryModal?.addEventListener("click", (event) => {
+        if (event.target === enquiryModal) {
             closeEnquiryModal();
-        });
-    }
-
-
-    if (enquiryModal) {
-        enquiryModal.addEventListener("click", function (event) {
-
-            if (event.target === enquiryModal) {
-                closeEnquiryModal();
-            }
-
-        });
-    }
-
-
-    if (logoutBtn) {
-        logoutBtn.addEventListener("click", function () {
-
-            const confirmation = confirm(
-                "Are you sure you want to logout?"
-            );
-
-            if (confirmation) {
-                sessionStorage.removeItem("rgpvAdminLoggedIn");
-                window.location.replace("login.html");
-            }
-
-        });
-    }
-
+        }
+    });
+    logoutButton?.addEventListener("click", () => {
+        if (confirm("Are you sure you want to logout?")) {
+            sessionStorage.removeItem("rgpvAdminToken");
+            sessionStorage.removeItem("rgpvAdminLoggedIn");
+            window.location.replace("login.html");
+        }
+    });
 });
 
-
-document.addEventListener("keydown", function (event) {
-
+document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
         closeEnquiryModal();
     }
-
 });

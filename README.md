@@ -1,207 +1,159 @@
-# 🎓 University Management System
+# RGPV University Portal
 
-A modern and responsive University Management System developed to create a digital platform for university information, student services, enquiries, and administration.
+A full-stack university portal that brings together campus information, enquiry handling, newsletter subscriptions, and an administrator dashboard in one responsive web application.
 
-The project is currently being developed as a full-stack web application. The frontend is being built using HTML, CSS, and JavaScript, while Java, Spring Boot, REST APIs, and MySQL are planned for the backend development phase.
+The project is designed as a practical university management portal. Visitors can explore academic and campus information, while administrators can sign in to view and manage data stored in MySQL.
 
->  **Project Status: In Development**
+## Features
 
----
+### Public website
 
-##  Project Overview
+- Responsive university landing page
+- Programmes, departments, admissions, notices, placements, and campus highlights
+- Student enquiry form with client-side validation
+- Newsletter subscription interface
+- Responsive navigation and interactive page sections
 
-The University Management System is designed to provide a structured and user-friendly digital platform for university-related information and services.
+### Administration portal
 
-The project focuses on creating a professional university website along with an administration portal. It is being developed step-by-step, beginning with the frontend interface and gradually expanding toward backend services, database integration, authentication, and dynamic data management.
+- Secure administrator login backed by a Spring Boot API
+- Token-based session for protected admin requests
+- Dashboard statistics for enquiries and subscribers
+- Search, view, and delete enquiries
+- View and delete newsletter subscribers
+- Database-driven records instead of browser-only storage
 
-The current version demonstrates the frontend design and interactive functionality of the system.
+### Backend API
 
----
-##  Project Demo
+- REST APIs for enquiries and newsletter subscriptions
+- MySQL persistence with Spring Data JPA
+- Centralised validation and error responses
+- BCrypt password hashing for the configured administrator account
+- JWT authentication for admin-only endpoints
+- CORS configuration for local frontend development
 
-Watch a walkthrough of the current frontend version of the University Management System.
+## Technology Stack
 
-▶️ [Watch Project Demo](university-management-system-demo-compressed.mp4)
+| Layer | Technologies |
+| --- | --- |
+| Frontend | HTML5, CSS3, JavaScript |
+| Backend | Java, Spring Boot, Spring Data JPA, Maven |
+| Database | MySQL |
+| Security | JWT, BCrypt |
+| Tools | VS Code, MySQL Workbench, Git, GitHub |
 
-> **Note:** This demo represents the current development version. Backend and database integration are planned for upcoming stages.
-
----
-##  Project Idea
-
-University websites contain a large amount of information such as academic programs, departments, admission details, notices, placement information, campus activities, and student enquiries.
-
-The idea behind this project is to organize these services into a modern and easy-to-use platform while also providing an administration interface for managing university-related data.
-
-The final goal is to transform the current frontend website into a complete full-stack University Management System.
-
----
-
-##  Current Features
-
-- Modern university landing page
-- Responsive navigation bar
-- Hero section
-- University statistics section
-- About University section
-- Courses and programs section
-- Department information
-- Latest notices and updates
-- Admission information
-- Placement highlights
-- Campus gallery
-- Student enquiry form
-- University contact information
-- Newsletter section
-- Responsive footer
-- Admin login interface
-- Administration dashboard interface
-- Form validation
-- Interactive UI elements using JavaScript
-- Responsive web design
-
----
-
-## Administration Portal
-
-The project also includes an administration interface designed for university management.
-
-The current admin module contains:
-
-- Admin login interface
-- Form validation
-- Show/Hide password functionality
-- Admin dashboard interface
-- Enquiry management interface
-- Administrative navigation
-
-> **Note:** The current authentication system is part of the frontend development/demo stage. Secure server-side authentication will be implemented during backend development.
-
----
-
-##  Technologies Used
-
-### Frontend
-
-- HTML5
-- CSS3
-- JavaScript
-
-### Backend — Planned
-
-- Java
-- Spring Boot
-- REST APIs
-
-### Database — Planned
-
-- MySQL
-
-### Development Tools
-
-- Visual Studio Code
-- Git
-- GitHub
-
----
-
-##  Planned Architecture
-
-Frontend
-
-HTML + CSS + JavaScript
-
-↓
-
-REST API Communication
-
-↓
-
-Backend
-
-Java + Spring Boot
-
-↓
-
-Database
-
-MySQL
-
----
-
-##  Project Structure
+## Project Structure
 
 ```text
-University-Management-System/
-│
-├── indexx.html
-├── stylee.css
-├── script.js
-│
-├── login.html
-├── login.css
-├── login.js
-│
-├── admin.html
-├── admin.css
-├── admin.js
-│
-├── images/
-│
-└── README.md
+collage-website/
+|
+|-- indexxx.html                 # Main website
+|-- styleee.css                  # Main website styling
+|-- script.js                    # Public website interactions
+|-- login.html                   # Admin login page
+|-- login.css
+|-- logiin.js                    # API-based admin login
+|-- admin.html                   # Admin dashboard
+|-- admin.css
+|-- admin.js                     # Dashboard API integration
+|-- images/
+|
+|-- backend/
+|   |-- src/main/java/           # Spring Boot source code
+|   |-- src/main/resources/
+|   |-- pom.xml
+|   |-- mvnw.cmd
+|   |-- .env.example
+|   `-- README.md
+|
+`-- README.md
 ```
-**Planned Features**
 
-Future development of the project will include:
+## API Overview
 
-Spring Boot backend integration
-MySQL database connectivity
-Secure administrator authentication
-Password hashing and authentication management
-REST API development
-Dynamic enquiry management
-Add, update and delete university notices
-Course and department management
-Student data management
-Newsletter subscriber management
-Dynamic administration dashboard
-Search and filtering functionality
-Improved form validation
-Improved responsive design
-Database-driven website content
-Better security and access control
+| Method | Endpoint | Purpose |
+| --- | --- | --- |
+| GET | `/api/health` | Check whether the backend is running |
+| POST | `/api/enquiries` | Save a student enquiry |
+| POST | `/api/newsletter` | Save a newsletter subscription |
+| POST | `/api/auth/login` | Admin login and token generation |
+| GET | `/api/admin/dashboard` | Get admin dashboard counts |
+| GET | `/api/admin/enquiries` | List or search enquiries |
+| DELETE | `/api/admin/enquiries/{id}` | Delete an enquiry |
+| GET | `/api/admin/subscribers` | List newsletter subscribers |
+| DELETE | `/api/admin/subscribers/{id}` | Delete a subscriber |
 
-**Project Objectives**
+Admin API routes require a valid token returned by the login endpoint.
 
-The main objectives of this project are:
+## Run Locally
 
-Build a complete full-stack web application
-Understand frontend and backend integration
-Implement REST APIs using Spring Boot
-Work with relational databases using MySQL
-Learn authentication and authorization concepts
-Develop practical CRUD functionality
-Improve responsive web development skills
-Apply Git and GitHub for version control
-Gain hands-on experience with real-world project development
+### Prerequisites
 
- **Learning Outcomes**
+- Java 17 or later
+- MySQL Server 8 or later
+- MySQL Workbench (recommended)
+- A modern web browser
 
-Through this project, I am gaining practical experience in:
+### 1. Create the database
 
-Structuring multi-page websites
-Creating responsive layouts
-Designing forms and user interfaces
-JavaScript DOM manipulation
-Form validation
-Git and GitHub workflow
-Full-stack application architecture
+Run this in MySQL Workbench:
 
-Future development will extend this learning to Java, Spring Boot, REST APIs, authentication, CRUD operations, and MySQL.
+```sql
+CREATE DATABASE university_management_system;
+```
 
-**⚠️ Current Development Stage**
+Create a MySQL user for the application and grant it access to this database. Avoid using the MySQL root account in the project configuration.
 
-This repository currently represents an in-progress version of the project.
+### 2. Configure local secrets
 
-The frontend and administrative interfaces are under active development. Backend services, database connectivity, and production-level authentication have not yet been implemented.
+Create `backend/application-local.properties`. This file is ignored by Git and must stay private.
 
-The repository will be updated as new functionality is completed.
+```properties
+spring.datasource.username=your_mysql_app_username
+spring.datasource.password=your_mysql_app_password
+app.admin.password=your_admin_login_password
+app.jwt.secret=use_a_long_random_secret_here
+```
+
+The database URL, port, and other safe defaults are available in `backend/src/main/resources/application.properties`.
+
+### 3. Start the backend
+
+From the `backend` folder, run:
+
+```powershell
+.\mvnw.cmd spring-boot:run
+```
+
+The API starts at `http://localhost:8080/api`. You can verify it by opening:
+
+```text
+http://localhost:8080/api/health
+```
+
+### 4. Open the frontend
+
+Open `indexxx.html` with Live Server in VS Code, or run it through any local static server. Keep the backend running while using the administration portal.
+
+## Security Notes
+
+- `backend/application-local.properties` and `.env` are excluded from version control.
+- Never commit database passwords, admin passwords, or JWT secrets.
+- The backend stores the configured admin password as a BCrypt hash.
+- Admin data APIs require a JWT token and reject unauthorised requests.
+
+## Current Status
+
+The portal has a complete responsive frontend and a working Spring Boot + MySQL backend for authentication, enquiries, newsletter data, and dashboard management. The next enhancements include connecting the public contact and newsletter submit events to their API endpoints, adding status management to the admin interface, and preparing a production deployment configuration.
+
+## Future Enhancements
+
+- Enquiry status updates from the dashboard
+- Notices, courses, departments, and placement content managed through the admin panel
+- Role-based access for multiple administrators
+- Email confirmations for enquiries and newsletter subscriptions
+- Deployment with environment-based production configuration
+
+## Project Demo
+
+[Watch the frontend walkthrough](university-management-system-demo-compressed.mp4)

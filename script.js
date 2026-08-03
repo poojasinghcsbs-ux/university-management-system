@@ -1,3 +1,5 @@
+const API_BASE_URL = "http://localhost:8080/api";
+
 // =====================================================
 //                    PAGE LOADER
 // =====================================================
@@ -387,30 +389,23 @@ document.addEventListener("keydown", (event) => {
 //             SAVE ENQUIRY TO LOCAL STORAGE
 // =====================================================
 
-function saveEnquiry(enquiry) {
+async function saveEnquiry(enquiry) {
 
-    let enquiries = [];
+    const response = await fetch(`${API_BASE_URL}/enquiries`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(enquiry)
+    });
 
-    try {
+    const data = await response.json().catch(() => ({}));
 
-        enquiries =
-            JSON.parse(
-                localStorage.getItem("rgpvEnquiries")
-            ) || [];
-
-    } catch (error) {
-
-        enquiries = [];
+    if (!response.ok) {
+        throw new Error(data.message || "Unable to submit your enquiry.");
     }
 
-
-    enquiries.push(enquiry);
-
-
-    localStorage.setItem(
-        "rgpvEnquiries",
-        JSON.stringify(enquiries)
-    );
+    return data;
 }
 
 
