@@ -12,6 +12,7 @@ The project is designed as a practical university management portal. Visitors ca
 - Programmes, departments, admissions, notices, placements, and campus highlights
 - Student enquiry form with client-side validation
 - Newsletter subscription interface
+- Latest Notices and Programmes sections powered by backend APIs
 - Responsive navigation and interactive page sections
 
 ### Administration portal
@@ -21,11 +22,13 @@ The project is designed as a practical university management portal. Visitors ca
 - Dashboard statistics for enquiries and subscribers
 - Search, view, update status, and delete enquiries
 - View and delete newsletter subscribers
+- Create, edit, and delete university notices
+- Create, edit, and delete university courses
 - Database-driven records instead of browser-only storage
 
 ### Backend API
 
-- REST APIs for enquiries and newsletter subscriptions
+- REST APIs for enquiries, newsletter subscriptions, notices, and courses
 - MySQL persistence with Spring Data JPA
 - Centralised validation and error responses
 - BCrypt password hashing for the configured administrator account
@@ -76,12 +79,23 @@ collage-website/
 | GET | `/api/health` | Check whether the backend is running |
 | POST | `/api/enquiries` | Save a student enquiry |
 | POST | `/api/newsletter` | Save a newsletter subscription |
+| GET | `/api/notices` | Get latest notices for the public website |
+| GET | `/api/courses` | Get courses for the public website |
 | POST | `/api/auth/login` | Admin login and token generation |
 | GET | `/api/admin/dashboard` | Get admin dashboard counts |
 | GET | `/api/admin/enquiries` | List or search enquiries |
+| PATCH | `/api/admin/enquiries/{id}/status` | Update an enquiry status |
 | DELETE | `/api/admin/enquiries/{id}` | Delete an enquiry |
 | GET | `/api/admin/subscribers` | List newsletter subscribers |
 | DELETE | `/api/admin/subscribers/{id}` | Delete a subscriber |
+| GET | `/api/admin/notices` | List notices for the admin dashboard |
+| POST | `/api/admin/notices` | Create a notice |
+| PUT | `/api/admin/notices/{id}` | Edit a notice |
+| DELETE | `/api/admin/notices/{id}` | Delete a notice |
+| GET | `/api/admin/courses` | List courses for the admin dashboard |
+| POST | `/api/admin/courses` | Create a course |
+| PUT | `/api/admin/courses/{id}` | Edit a course |
+| DELETE | `/api/admin/courses/{id}` | Delete a course |
 
 Admin API routes require a valid token returned by the login endpoint.
 
@@ -144,11 +158,11 @@ Open `indexxx.html` with Live Server in VS Code, or run it through any local sta
 
 ## Current Status
 
-The portal has a complete responsive frontend and a working Spring Boot + MySQL backend for authentication, enquiries, newsletter data, and dashboard management. The public contact and newsletter forms are connected to the REST API, so submitted data is stored in MySQL and available in the admin dashboard. Administrators can search, view, delete, and update enquiry status from the dashboard. The next enhancement is preparing a production deployment configuration.
+The portal has a complete responsive frontend and a working Spring Boot + MySQL backend for authentication, enquiries, newsletter data, notices, courses, and dashboard management. The public contact and newsletter forms are connected to the REST API, so submitted data is stored in MySQL and available in the admin dashboard. Administrators can search, view, delete, and update enquiry status, as well as publish, edit, and delete notices and courses. Published notices and courses appear automatically in the public website. The next enhancement is preparing a production deployment configuration.
 
 ## Future Enhancements
 
-- Notices, courses, departments, and placement content managed through the admin panel
+- Departments and placement content managed through the admin panel
 - Role-based access for multiple administrators
 - Email confirmations for enquiries and newsletter subscriptions
 - Deployment with environment-based production configuration

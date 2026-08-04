@@ -29,6 +29,14 @@
                 📩 Enquiries
             </a>
 
+            <a href="#courses">
+                &#127891; Courses
+            </a>
+
+            <a href="#notices">
+                &#128226; Notices
+            </a>
+
             <a href="#subscribers">
                 ✉️ Subscribers
             </a>
@@ -176,6 +184,232 @@
 
                     <p>
                         Submitted enquiries will appear here.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="admin-section" id="courses">
+
+            <div class="section-top">
+
+                <div>
+
+                    <p class="small-heading">
+                        ACADEMIC PROGRAMS
+                    </p>
+
+                    <h2>
+                        Manage Courses
+                    </h2>
+                </div>
+
+            </div>
+
+
+            <form id="courseForm" class="notice-form" novalidate>
+
+                <input type="hidden" id="courseId">
+
+                <div class="course-form-grid">
+
+                    <div class="notice-field">
+                        <label for="courseName">Course Name</label>
+                        <input id="courseName" type="text" maxlength="120"
+                            placeholder="For example: B.Tech Computer Science" required>
+                    </div>
+
+                    <div class="notice-field">
+                        <label for="courseDepartment">Department</label>
+                        <input id="courseDepartment" type="text" maxlength="120"
+                            placeholder="For example: Computer Science" required>
+                    </div>
+
+                    <div class="notice-field">
+                        <label for="courseDuration">Duration</label>
+                        <input id="courseDuration" type="text" maxlength="50"
+                            placeholder="For example: 4 Years" required>
+                    </div>
+
+                    <div class="notice-field">
+                        <label for="courseType">Course Type</label>
+                        <select id="courseType" required>
+                            <option value="">Select type</option>
+                            <option value="ENGINEERING">Engineering</option>
+                            <option value="COMPUTER">Computer Applications</option>
+                            <option value="MANAGEMENT">Management</option>
+                            <option value="SCIENCE">Science</option>
+                            <option value="COMMERCE">Commerce</option>
+                            <option value="GENERAL">General</option>
+                        </select>
+                    </div>
+
+                    <div class="notice-field course-description-field">
+                        <label for="courseDescription">Description</label>
+                        <textarea id="courseDescription" rows="3" maxlength="2000"
+                            placeholder="Write a short overview of this course" required></textarea>
+                    </div>
+
+                </div>
+
+                <div class="notice-form-actions">
+                    <button type="submit" class="notice-save-btn" id="courseSubmitBtn">
+                        Add Course
+                    </button>
+                    <button type="button" class="notice-cancel-btn" id="cancelCourseEdit" hidden>
+                        Cancel Edit
+                    </button>
+                    <p id="courseFormMessage" class="notice-form-message" role="status"></p>
+                </div>
+
+            </form>
+
+
+            <div class="table-container notice-table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Course</th>
+                            <th>Department</th>
+                            <th>Duration</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Action</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="courseTableBody">
+                    </tbody>
+
+                </table>
+
+
+                <div class="empty-message" id="noCourses">
+
+                    <span>&#127891;</span>
+
+                    <h3>No courses yet</h3>
+
+                    <p>
+                        Added courses will appear here.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="admin-section" id="notices">
+
+            <div class="section-top">
+
+                <div>
+
+                    <p class="small-heading">
+                        UNIVERSITY UPDATES
+                    </p>
+
+                    <h2>
+                        Manage Notices
+                    </h2>
+                </div>
+
+            </div>
+
+
+            <form id="noticeForm" class="notice-form" novalidate>
+
+                <input type="hidden" id="noticeId">
+
+                <div class="notice-form-grid">
+
+                    <div class="notice-field notice-title-field">
+                        <label for="noticeTitle">Notice Title</label>
+                        <input id="noticeTitle" type="text" maxlength="180"
+                            placeholder="Enter notice title" required>
+                    </div>
+
+                    <div class="notice-field">
+                        <label for="noticeCategory">Category</label>
+                        <select id="noticeCategory" required>
+                            <option value="">Select category</option>
+                            <option value="ADMISSIONS">Admissions</option>
+                            <option value="ACADEMIC">Academic</option>
+                            <option value="EXAMINATION">Examination</option>
+                            <option value="PLACEMENT">Placement</option>
+                            <option value="EVENTS">Events</option>
+                            <option value="GENERAL">General</option>
+                        </select>
+                    </div>
+
+                    <div class="notice-field">
+                        <label for="noticeDate">Notice Date</label>
+                        <input id="noticeDate" type="date" required>
+                    </div>
+
+                    <div class="notice-field notice-description-field">
+                        <label for="noticeDescription">Description</label>
+                        <textarea id="noticeDescription" rows="3" maxlength="2000"
+                            placeholder="Write a short notice description" required></textarea>
+                    </div>
+
+                </div>
+
+                <div class="notice-form-actions">
+                    <button type="submit" class="notice-save-btn" id="noticeSubmitBtn">
+                        Publish Notice
+                    </button>
+                    <button type="button" class="notice-cancel-btn" id="cancelNoticeEdit" hidden>
+                        Cancel Edit
+                    </button>
+                    <p id="noticeFormMessage" class="notice-form-message" role="status"></p>
+                </div>
+
+            </form>
+
+
+            <div class="table-container notice-table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Title</th>
+                            <th>Category</th>
+                            <th>Notice Date</th>
+                            <th>Description</th>
+                            <th>Action</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="noticeTableBody">
+                    </tbody>
+
+                </table>
+
+
+                <div class="empty-message" id="noNotices">
+
+                    <span>&#128226;</span>
+
+                    <h3>No notices yet</h3>
+
+                    <p>
+                        Published notices will appear here.
                     </p>
 
                 </div>

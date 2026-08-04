@@ -429,6 +429,128 @@ async function subscribeToNewsletter(email) {
 
 
 // =====================================================
+//                  LATEST NOTICES API
+// =====================================================
+
+function escapeNoticeHTML(value) {
+    const element = document.createElement("div");
+    element.textContent = String(value ?? "");
+    return element.innerHTML;
+}
+
+function formatPublicNoticeDate(value) {
+    if (!value) {
+        return "";
+    }
+    return new Intl.DateTimeFormat("en-IN", {
+        dateStyle: "medium",
+        timeZone: "UTC"
+    }).format(new Date(`${value}T00:00:00Z`));
+}
+
+function getNoticeIcon(category) {
+    const icons = {
+        ADMISSIONS: "&#127891;",
+        ACADEMIC: "&#128218;",
+        EXAMINATION: "&#128197;",
+        PLACEMENT: "&#128188;",
+        EVENTS: "&#127917;",
+        GENERAL: "&#128226;"
+    };
+    return icons[category] || icons.GENERAL;
+}
+
+async function loadPublicNotices() {
+    const noticeContainer = document.getElementById("noticeContainer");
+    if (!noticeContainer) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/notices`);
+        const notices = await response.json().catch(() => []);
+
+        if (!response.ok || !Array.isArray(notices) || notices.length === 0) {
+            return;
+        }
+
+        noticeContainer.innerHTML = notices.slice(0, 6).map((notice) => `
+            <article class="notice-card">
+                <div class="notice-icon">${getNoticeIcon(notice.category)}</div>
+                <div class="notice-content">
+                    <span>${escapeNoticeHTML(notice.category)}</span>
+                    <h3>${escapeNoticeHTML(notice.title)}</h3>
+                    <p>${escapeNoticeHTML(notice.description)}</p>
+                    <small>Published: ${escapeNoticeHTML(formatPublicNoticeDate(notice.noticeDate))}</small>
+                </div>
+            </article>`).join("");
+    } catch (error) {
+        // The existing static notices remain visible if the API is unavailable.
+    }
+}
+
+loadPublicNotices();
+
+
+// =====================================================
+//                  PROGRAMMES API
+// =====================================================
+
+function getCourseIcon(courseType) {
+    const icons = {
+        ENGINEERING: "&#128187;",
+        COMPUTER: "&#128421;",
+        MANAGEMENT: "&#128200;",
+        SCIENCE: "&#128300;",
+        COMMERCE: "&#128202;",
+        GENERAL: "&#127891;"
+    };
+    return icons[courseType] || icons.GENERAL;
+}
+
+function formatPublicCourseType(courseType) {
+    const types = {
+        ENGINEERING: "Engineering",
+        COMPUTER: "Computer Applications",
+        MANAGEMENT: "Management",
+        SCIENCE: "Science",
+        COMMERCE: "Commerce",
+        GENERAL: "General"
+    };
+    return types[courseType] || courseType || "Programme";
+}
+
+async function loadPublicCourses() {
+    const courseContainer = document.getElementById("courseContainer");
+    if (!courseContainer) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/courses`);
+        const courses = await response.json().catch(() => []);
+
+        if (!response.ok || !Array.isArray(courses) || courses.length === 0) {
+            return;
+        }
+
+        courseContainer.innerHTML = courses.map((course) => `
+            <article class="course-card">
+                <div class="course-icon">${getCourseIcon(course.courseType)}</div>
+                <h3>${escapeNoticeHTML(course.name)}</h3>
+                <p>${escapeNoticeHTML(course.description)}</p>
+                <small class="course-meta">${escapeNoticeHTML(course.department)} · ${escapeNoticeHTML(course.duration)} · ${escapeNoticeHTML(formatPublicCourseType(course.courseType))}</small>
+                <a href="#contact">Explore Course &rarr;</a>
+            </article>`).join("");
+    } catch (error) {
+        // The existing static course cards remain visible if the API is unavailable.
+    }
+}
+
+loadPublicCourses();
+
+
+// =====================================================
 //                 CONTACT FORM VALIDATION
 // =====================================================
 

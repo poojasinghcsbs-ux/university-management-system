@@ -19,7 +19,9 @@ body {
 }
 
 button,
-input {
+input,
+select,
+textarea {
     font-family: inherit;
 }
 
@@ -892,4 +894,204 @@ tbody tr:hover {
     cursor: wait;
 
     opacity: 0.7;
+}
+
+
+/* =====================================================
+                   NOTICE MANAGEMENT
+===================================================== */
+
+.notice-form {
+    padding: 20px;
+
+    background: #f8fafc;
+
+    border: 1px solid #e5ebf2;
+
+    border-radius: 10px;
+}
+
+.notice-form-grid {
+    display: grid;
+
+    grid-template-columns: 2fr 1fr 1fr;
+
+    gap: 15px;
+}
+
+.course-form-grid {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 15px;
+}
+
+.notice-field {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+.notice-description-field {
+    grid-column: 1 / -1;
+}
+
+.course-description-field {
+    grid-column: 1 / -1;
+}
+
+.notice-field label {
+    color: #536274;
+
+    font-size: 12px;
+
+    font-weight: bold;
+}
+
+.notice-field input,
+.notice-field select,
+.notice-field textarea {
+    width: 100%;
+
+    padding: 10px 11px;
+
+    border: 1px solid #d7dfe8;
+
+    border-radius: 7px;
+
+    outline: none;
+
+    color: #26384d;
+
+    background: white;
+
+    transition: 0.3s;
+}
+
+.notice-field textarea {
+    resize: vertical;
+}
+
+.notice-field input:focus,
+.notice-field select:focus,
+.notice-field textarea:focus {
+    border-color: #173b67;
+
+    box-shadow: 0 0 0 3px rgba(23, 59, 103, 0.07);
+}
+
+.notice-form-actions {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 16px;
+}
+
+.notice-save-btn,
+.notice-cancel-btn,
+.notice-edit-btn,
+.course-edit-btn {
+    border: none;
+
+    border-radius: 7px;
+
+    padding: 10px 14px;
+
+    cursor: pointer;
+
+    font-size: 12px;
+
+    font-weight: bold;
+
+    transition: 0.3s;
+}
+
+.notice-save-btn {
+    background: #173b67;
+
+    color: white;
+}
+
+.notice-save-btn:hover:not(:disabled) {
+    background: #f4c430;
+
+    color: #173b67;
+}
+
+.notice-save-btn:disabled {
+    cursor: wait;
+
+    opacity: 0.7;
+}
+
+.notice-cancel-btn,
+.notice-edit-btn,
+.course-edit-btn {
+    background: #edf3fa;
+
+    color: #173b67;
+}
+
+.notice-cancel-btn:hover,
+.notice-edit-btn:hover,
+.course-edit-btn:hover {
+    background: #173b67;
+
+    color: white;
+}
+
+.notice-form-message {
+    min-height: 16px;
+
+    color: #246b37;
+
+    font-size: 12px;
+
+    font-weight: bold;
+}
+
+.notice-form-message.error-message {
+    color: #b63838;
+}
+
+.notice-table-container {
+    margin-top: 24px;
+}
+
+.notice-description-cell {
+    min-width: 250px;
+
+    max-width: 340px;
+
+    line-height: 1.45;
+}
+
+@media (max-width: 760px) {
+    .notice-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .course-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .notice-description-field {
+        grid-column: auto;
+    }
+
+    .course-description-field {
+        grid-column: auto;
+    }
+
+    .notice-form-actions {
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
 }

@@ -731,6 +731,20 @@ textarea {
     min-height: 95px;
 }
 
+.course-meta {
+    display: block;
+
+    min-height: 42px;
+
+    margin: 10px 0 16px;
+
+    color: #5c6f84;
+
+    font-size: 13px;
+
+    line-height: 1.45;
+}
+
 .course-card a {
     color: #173b67;
 
@@ -888,6 +902,30 @@ textarea {
     font-size: 17px;
 
     margin-top: 3px;
+}
+
+.notice-content {
+    min-width: 0;
+}
+
+.notice-card p {
+    color: #607084;
+
+    font-size: 13px;
+
+    line-height: 1.45;
+
+    margin-top: 7px;
+}
+
+.notice-card small {
+    display: block;
+
+    color: #8a96a4;
+
+    font-size: 11px;
+
+    margin-top: 8px;
 }
 
 
