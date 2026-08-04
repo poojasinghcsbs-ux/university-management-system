@@ -33,6 +33,14 @@
                 &#127891; Courses
             </a>
 
+            <a href="#departments">
+                &#127979; Departments
+            </a>
+
+            <a href="#placements">
+                &#128188; Placements
+            </a>
+
             <a href="#notices">
                 &#128226; Notices
             </a>
@@ -193,6 +201,109 @@
         </section>
 
 
+        <section class="admin-section" id="departments">
+
+            <div class="section-top">
+
+                <div>
+
+                    <p class="small-heading">
+                        ACADEMIC STRUCTURE
+                    </p>
+
+                    <h2>
+                        Manage Departments
+                    </h2>
+                </div>
+
+            </div>
+
+
+            <form id="departmentForm" class="notice-form" novalidate>
+
+                <input type="hidden" id="departmentId">
+
+                <div class="department-form-grid">
+
+                    <div class="notice-field">
+                        <label for="departmentName">Department Name</label>
+                        <input id="departmentName" type="text" maxlength="140"
+                            placeholder="For example: Computer Science & Engineering" required>
+                    </div>
+
+                    <div class="notice-field">
+                        <label for="departmentCode">Department Code</label>
+                        <input id="departmentCode" type="text" maxlength="30"
+                            placeholder="For example: CSE" required>
+                    </div>
+
+                    <div class="notice-field">
+                        <label for="departmentHodName">Head of Department</label>
+                        <input id="departmentHodName" type="text" maxlength="120"
+                            placeholder="For example: Dr. A. Sharma" required>
+                    </div>
+
+                    <div class="notice-field department-description-field">
+                        <label for="departmentDescription">Department Description</label>
+                        <textarea id="departmentDescription" rows="3" maxlength="2000"
+                            placeholder="Write a short overview of the department" required></textarea>
+                    </div>
+
+                </div>
+
+                <div class="notice-form-actions">
+                    <button type="submit" class="notice-save-btn" id="departmentSubmitBtn">
+                        Add Department
+                    </button>
+                    <button type="button" class="notice-cancel-btn" id="cancelDepartmentEdit" hidden>
+                        Cancel Edit
+                    </button>
+                    <p id="departmentFormMessage" class="notice-form-message" role="status"></p>
+                </div>
+
+            </form>
+
+
+            <div class="table-container notice-table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Department</th>
+                            <th>Code</th>
+                            <th>Head of Department</th>
+                            <th>Description</th>
+                            <th>Action</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="departmentTableBody">
+                    </tbody>
+
+                </table>
+
+
+                <div class="empty-message" id="noDepartments">
+
+                    <span>&#127979;</span>
+
+                    <h3>No departments yet</h3>
+
+                    <p>
+                        Added departments will appear here.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
         <section class="admin-section" id="courses">
 
             <div class="section-top">
@@ -301,6 +412,121 @@
 
                     <p>
                         Added courses will appear here.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="admin-section" id="placements">
+
+            <div class="section-top">
+
+                <div>
+
+                    <p class="small-heading">
+                        CAREER OPPORTUNITIES
+                    </p>
+
+                    <h2>
+                        Manage Placement Drives
+                    </h2>
+                </div>
+
+            </div>
+
+
+            <form id="placementForm" class="notice-form" novalidate>
+
+                <input type="hidden" id="placementId">
+
+                <div class="placement-form-grid">
+
+                    <div class="notice-field">
+                        <label for="placementCompanyName">Company Name</label>
+                        <input id="placementCompanyName" type="text" maxlength="120"
+                            placeholder="For example: Infosys" required>
+                    </div>
+
+                    <div class="notice-field">
+                        <label for="placementJobRole">Job Role</label>
+                        <input id="placementJobRole" type="text" maxlength="120"
+                            placeholder="For example: Systems Engineer" required>
+                    </div>
+
+                    <div class="notice-field">
+                        <label for="placementPackageOffered">Package Offered</label>
+                        <input id="placementPackageOffered" type="text" maxlength="80"
+                            placeholder="For example: 6.5 LPA" required>
+                    </div>
+
+                    <div class="notice-field">
+                        <label for="placementDriveDate">Drive Date</label>
+                        <input id="placementDriveDate" type="date" required>
+                    </div>
+
+                    <div class="notice-field placement-eligibility-field">
+                        <label for="placementEligibility">Eligibility</label>
+                        <input id="placementEligibility" type="text" maxlength="400"
+                            placeholder="For example: B.Tech / MCA, 60% throughout" required>
+                    </div>
+
+                    <div class="notice-field placement-description-field">
+                        <label for="placementDescription">Drive Details</label>
+                        <textarea id="placementDescription" rows="3" maxlength="2000"
+                            placeholder="Add registration, selection process, or other useful information" required></textarea>
+                    </div>
+
+                </div>
+
+                <div class="notice-form-actions">
+                    <button type="submit" class="notice-save-btn" id="placementSubmitBtn">
+                        Add Placement Drive
+                    </button>
+                    <button type="button" class="notice-cancel-btn" id="cancelPlacementEdit" hidden>
+                        Cancel Edit
+                    </button>
+                    <p id="placementFormMessage" class="notice-form-message" role="status"></p>
+                </div>
+
+            </form>
+
+
+            <div class="table-container notice-table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Company</th>
+                            <th>Role</th>
+                            <th>Package</th>
+                            <th>Drive Date</th>
+                            <th>Eligibility</th>
+                            <th>Action</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="placementTableBody">
+                    </tbody>
+
+                </table>
+
+
+                <div class="empty-message" id="noPlacements">
+
+                    <span>&#128188;</span>
+
+                    <h3>No placement drives yet</h3>
+
+                    <p>
+                        Added placement drives will appear here.
                     </p>
 
                 </div>

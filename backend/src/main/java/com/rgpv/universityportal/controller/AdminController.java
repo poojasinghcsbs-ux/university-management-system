@@ -2,16 +2,22 @@ package com.rgpv.universityportal.controller;
 
 import com.rgpv.universityportal.dto.DashboardResponse;
 import com.rgpv.universityportal.dto.CourseRequest;
+import com.rgpv.universityportal.dto.DepartmentRequest;
 import com.rgpv.universityportal.dto.NoticeRequest;
+import com.rgpv.universityportal.dto.PlacementDriveRequest;
 import com.rgpv.universityportal.dto.UpdateEnquiryStatusRequest;
 import com.rgpv.universityportal.model.Course;
+import com.rgpv.universityportal.model.Department;
 import com.rgpv.universityportal.model.Enquiry;
 import com.rgpv.universityportal.model.NewsletterSubscriber;
 import com.rgpv.universityportal.model.Notice;
+import com.rgpv.universityportal.model.PlacementDrive;
 import com.rgpv.universityportal.service.EnquiryService;
 import com.rgpv.universityportal.service.CourseService;
+import com.rgpv.universityportal.service.DepartmentService;
 import com.rgpv.universityportal.service.NewsletterService;
 import com.rgpv.universityportal.service.NoticeService;
+import com.rgpv.universityportal.service.PlacementDriveService;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -33,18 +39,24 @@ public class AdminController {
 
     private final EnquiryService enquiryService;
     private final CourseService courseService;
+    private final DepartmentService departmentService;
     private final NewsletterService newsletterService;
     private final NoticeService noticeService;
+    private final PlacementDriveService placementDriveService;
 
     public AdminController(
             EnquiryService enquiryService,
             CourseService courseService,
+            DepartmentService departmentService,
             NewsletterService newsletterService,
-            NoticeService noticeService) {
+            NoticeService noticeService,
+            PlacementDriveService placementDriveService) {
         this.enquiryService = enquiryService;
         this.courseService = courseService;
+        this.departmentService = departmentService;
         this.newsletterService = newsletterService;
         this.noticeService = noticeService;
+        this.placementDriveService = placementDriveService;
     }
 
     @GetMapping("/dashboard")
@@ -123,5 +135,53 @@ public class AdminController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCourse(@PathVariable Long id) {
         courseService.delete(id);
+    }
+
+    @GetMapping("/departments")
+    public List<Department> departments() {
+        return departmentService.findAll();
+    }
+
+    @PostMapping("/departments")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Department createDepartment(@Valid @RequestBody DepartmentRequest request) {
+        return departmentService.create(request);
+    }
+
+    @PutMapping("/departments/{id}")
+    public Department updateDepartment(
+            @PathVariable Long id,
+            @Valid @RequestBody DepartmentRequest request) {
+        return departmentService.update(id, request);
+    }
+
+    @DeleteMapping("/departments/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteDepartment(@PathVariable Long id) {
+        departmentService.delete(id);
+    }
+
+    @GetMapping("/placements")
+    public List<PlacementDrive> placements() {
+        return placementDriveService.findAll();
+    }
+
+    @PostMapping("/placements")
+    @ResponseStatus(HttpStatus.CREATED)
+    public PlacementDrive createPlacement(@Valid @RequestBody PlacementDriveRequest request) {
+        return placementDriveService.create(request);
+    }
+
+    @PutMapping("/placements/{id}")
+    public PlacementDrive updatePlacement(
+            @PathVariable Long id,
+            @Valid @RequestBody PlacementDriveRequest request) {
+        return placementDriveService.update(id, request);
+    }
+
+    @DeleteMapping("/placements/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletePlacement(@PathVariable Long id) {
+        placementDriveService.delete(id);
     }
 }

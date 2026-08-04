@@ -9,6 +9,8 @@ let currentEnquiries = [];
 let currentSubscribers = [];
 let currentNotices = [];
 let currentCourses = [];
+let currentDepartments = [];
+let currentPlacementDrives = [];
 
 function escapeHTML(value) {
     const element = document.createElement("div");
@@ -125,6 +127,16 @@ async function loadNotices() {
 async function loadCourses() {
     currentCourses = await apiRequest("/admin/courses");
     displayCourses();
+}
+
+async function loadDepartments() {
+    currentDepartments = await apiRequest("/admin/departments");
+    displayDepartments();
+}
+
+async function loadPlacementDrives() {
+    currentPlacementDrives = await apiRequest("/admin/placements");
+    displayPlacementDrives();
 }
 
 function setText(id, value) {
@@ -272,6 +284,71 @@ function displayCourses() {
     });
     tableBody.querySelectorAll(".course-delete-btn").forEach((button) => {
         button.addEventListener("click", () => deleteCourse(Number(button.dataset.id)));
+    });
+}
+
+function displayDepartments() {
+    const tableBody = document.getElementById("departmentTableBody");
+    const noDepartments = document.getElementById("noDepartments");
+    if (!tableBody || !noDepartments) {
+        return;
+    }
+
+    tableBody.innerHTML = "";
+    noDepartments.classList.toggle("show-empty", currentDepartments.length === 0);
+
+    currentDepartments.forEach((department) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td><strong>${escapeHTML(department.name)}</strong></td>
+            <td><span class="enquiry-badge">${escapeHTML(department.departmentCode)}</span></td>
+            <td>${escapeHTML(department.hodName)}</td>
+            <td class="notice-description-cell">${escapeHTML(department.description)}</td>
+            <td>
+                <button type="button" class="department-edit-btn" data-id="${department.id}">Edit</button>
+                <button type="button" class="delete-btn department-delete-btn" data-id="${department.id}">Delete</button>
+            </td>`;
+        tableBody.appendChild(row);
+    });
+
+    tableBody.querySelectorAll(".department-edit-btn").forEach((button) => {
+        button.addEventListener("click", () => startDepartmentEdit(Number(button.dataset.id)));
+    });
+    tableBody.querySelectorAll(".department-delete-btn").forEach((button) => {
+        button.addEventListener("click", () => deleteDepartment(Number(button.dataset.id)));
+    });
+}
+
+function displayPlacementDrives() {
+    const tableBody = document.getElementById("placementTableBody");
+    const noPlacements = document.getElementById("noPlacements");
+    if (!tableBody || !noPlacements) {
+        return;
+    }
+
+    tableBody.innerHTML = "";
+    noPlacements.classList.toggle("show-empty", currentPlacementDrives.length === 0);
+
+    currentPlacementDrives.forEach((drive) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td><strong>${escapeHTML(drive.companyName)}</strong></td>
+            <td>${escapeHTML(drive.jobRole)}</td>
+            <td><span class="enquiry-badge">${escapeHTML(drive.packageOffered)}</span></td>
+            <td>${escapeHTML(formatNoticeDate(drive.driveDate))}</td>
+            <td class="notice-description-cell">${escapeHTML(drive.eligibility)}</td>
+            <td>
+                <button type="button" class="placement-edit-btn" data-id="${drive.id}">Edit</button>
+                <button type="button" class="delete-btn placement-delete-btn" data-id="${drive.id}">Delete</button>
+            </td>`;
+        tableBody.appendChild(row);
+    });
+
+    tableBody.querySelectorAll(".placement-edit-btn").forEach((button) => {
+        button.addEventListener("click", () => startPlacementEdit(Number(button.dataset.id)));
+    });
+    tableBody.querySelectorAll(".placement-delete-btn").forEach((button) => {
+        button.addEventListener("click", () => deletePlacementDrive(Number(button.dataset.id)));
     });
 }
 
@@ -513,6 +590,222 @@ async function deleteCourse(id) {
     }
 }
 
+function setDepartmentFormMessage(message = "", isError = false) {
+    const messageElement = document.getElementById("departmentFormMessage");
+    if (!messageElement) {
+        return;
+    }
+    messageElement.textContent = message;
+    messageElement.classList.toggle("error-message", isError);
+}
+
+function resetDepartmentForm() {
+    const departmentForm = document.getElementById("departmentForm");
+    const departmentId = document.getElementById("departmentId");
+    const submitButton = document.getElementById("departmentSubmitBtn");
+    const cancelButton = document.getElementById("cancelDepartmentEdit");
+
+    departmentForm?.reset();
+    if (departmentId) {
+        departmentId.value = "";
+    }
+    if (submitButton) {
+        submitButton.textContent = "Add Department";
+    }
+    if (cancelButton) {
+        cancelButton.hidden = true;
+    }
+    setDepartmentFormMessage();
+}
+
+function startDepartmentEdit(id) {
+    const department = currentDepartments.find((item) => item.id === id);
+    if (!department) {
+        return;
+    }
+
+    document.getElementById("departmentId").value = department.id;
+    document.getElementById("departmentName").value = department.name;
+    document.getElementById("departmentCode").value = department.departmentCode;
+    document.getElementById("departmentHodName").value = department.hodName;
+    document.getElementById("departmentDescription").value = department.description;
+    document.getElementById("departmentSubmitBtn").textContent = "Update Department";
+    document.getElementById("cancelDepartmentEdit").hidden = false;
+    setDepartmentFormMessage("Editing this department. Save when you are ready.");
+    document.getElementById("departmentName").focus();
+}
+
+async function saveDepartment(event) {
+    event.preventDefault();
+
+    const departmentForm = document.getElementById("departmentForm");
+    if (!departmentForm?.reportValidity()) {
+        return;
+    }
+
+    const departmentId = document.getElementById("departmentId").value;
+    const submitButton = document.getElementById("departmentSubmitBtn");
+    const defaultButtonText = submitButton.textContent;
+    const departmentData = {
+        name: document.getElementById("departmentName").value.trim(),
+        departmentCode: document.getElementById("departmentCode").value.trim(),
+        hodName: document.getElementById("departmentHodName").value.trim(),
+        description: document.getElementById("departmentDescription").value.trim()
+    };
+
+    submitButton.disabled = true;
+    submitButton.textContent = departmentId ? "Updating..." : "Adding...";
+    setDepartmentFormMessage();
+
+    try {
+        await apiRequest(
+            departmentId ? `/admin/departments/${departmentId}` : "/admin/departments",
+            {
+                method: departmentId ? "PUT" : "POST",
+                body: JSON.stringify(departmentData)
+            }
+        );
+        resetDepartmentForm();
+        setDepartmentFormMessage(
+            departmentId ? "Department updated successfully." : "Department added successfully."
+        );
+        await loadDepartments();
+    } catch (error) {
+        setDepartmentFormMessage(error.message || "Unable to save the department.", true);
+    } finally {
+        submitButton.disabled = false;
+        if (document.getElementById("departmentId").value === departmentId) {
+            submitButton.textContent = defaultButtonText;
+        }
+    }
+}
+
+async function deleteDepartment(id) {
+    if (!confirm("Delete this department?")) {
+        return;
+    }
+
+    try {
+        await apiRequest(`/admin/departments/${id}`, { method: "DELETE" });
+        if (String(id) === document.getElementById("departmentId")?.value) {
+            resetDepartmentForm();
+        }
+        await loadDepartments();
+    } catch (error) {
+        alert(error.message);
+    }
+}
+
+function setPlacementFormMessage(message = "", isError = false) {
+    const messageElement = document.getElementById("placementFormMessage");
+    if (!messageElement) {
+        return;
+    }
+    messageElement.textContent = message;
+    messageElement.classList.toggle("error-message", isError);
+}
+
+function resetPlacementForm() {
+    const placementForm = document.getElementById("placementForm");
+    const placementId = document.getElementById("placementId");
+    const submitButton = document.getElementById("placementSubmitBtn");
+    const cancelButton = document.getElementById("cancelPlacementEdit");
+
+    placementForm?.reset();
+    if (placementId) {
+        placementId.value = "";
+    }
+    if (submitButton) {
+        submitButton.textContent = "Add Placement Drive";
+    }
+    if (cancelButton) {
+        cancelButton.hidden = true;
+    }
+    setPlacementFormMessage();
+}
+
+function startPlacementEdit(id) {
+    const drive = currentPlacementDrives.find((item) => item.id === id);
+    if (!drive) {
+        return;
+    }
+
+    document.getElementById("placementId").value = drive.id;
+    document.getElementById("placementCompanyName").value = drive.companyName;
+    document.getElementById("placementJobRole").value = drive.jobRole;
+    document.getElementById("placementPackageOffered").value = drive.packageOffered;
+    document.getElementById("placementDriveDate").value = drive.driveDate;
+    document.getElementById("placementEligibility").value = drive.eligibility;
+    document.getElementById("placementDescription").value = drive.description;
+    document.getElementById("placementSubmitBtn").textContent = "Update Placement Drive";
+    document.getElementById("cancelPlacementEdit").hidden = false;
+    setPlacementFormMessage("Editing this placement drive. Save when you are ready.");
+    document.getElementById("placementCompanyName").focus();
+}
+
+async function savePlacementDrive(event) {
+    event.preventDefault();
+
+    const placementForm = document.getElementById("placementForm");
+    if (!placementForm?.reportValidity()) {
+        return;
+    }
+
+    const placementId = document.getElementById("placementId").value;
+    const submitButton = document.getElementById("placementSubmitBtn");
+    const defaultButtonText = submitButton.textContent;
+    const placementData = {
+        companyName: document.getElementById("placementCompanyName").value.trim(),
+        jobRole: document.getElementById("placementJobRole").value.trim(),
+        packageOffered: document.getElementById("placementPackageOffered").value.trim(),
+        driveDate: document.getElementById("placementDriveDate").value,
+        eligibility: document.getElementById("placementEligibility").value.trim(),
+        description: document.getElementById("placementDescription").value.trim()
+    };
+
+    submitButton.disabled = true;
+    submitButton.textContent = placementId ? "Updating..." : "Adding...";
+    setPlacementFormMessage();
+
+    try {
+        await apiRequest(
+            placementId ? `/admin/placements/${placementId}` : "/admin/placements",
+            {
+                method: placementId ? "PUT" : "POST",
+                body: JSON.stringify(placementData)
+            }
+        );
+        resetPlacementForm();
+        setPlacementFormMessage(
+            placementId ? "Placement drive updated successfully." : "Placement drive added successfully."
+        );
+        await loadPlacementDrives();
+    } catch (error) {
+        setPlacementFormMessage(error.message || "Unable to save the placement drive.", true);
+    } finally {
+        submitButton.disabled = false;
+        if (document.getElementById("placementId").value === placementId) {
+            submitButton.textContent = defaultButtonText;
+        }
+    }
+}
+
+async function deletePlacementDrive(id) {
+    if (!confirm("Delete this placement drive?")) {
+        return;
+    }
+
+    try {
+        await apiRequest(`/admin/placements/${id}`, { method: "DELETE" });
+        if (String(id) === document.getElementById("placementId")?.value) {
+            resetPlacementForm();
+        }
+        await loadPlacementDrives();
+    } catch (error) {
+        alert(error.message);
+    }
+}
+
 async function updateEnquiryStatus(id, status, button) {
     if (!status) {
         return;
@@ -602,6 +895,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     const clearSubscribersButton = document.getElementById("clearSubscribers");
     const courseForm = document.getElementById("courseForm");
     const cancelCourseEdit = document.getElementById("cancelCourseEdit");
+    const departmentForm = document.getElementById("departmentForm");
+    const cancelDepartmentEdit = document.getElementById("cancelDepartmentEdit");
+    const placementForm = document.getElementById("placementForm");
+    const cancelPlacementEdit = document.getElementById("cancelPlacementEdit");
     const noticeForm = document.getElementById("noticeForm");
     const cancelNoticeEdit = document.getElementById("cancelNoticeEdit");
     const modalClose = document.getElementById("modalClose");
@@ -609,7 +906,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     const logoutButton = document.getElementById("logoutBtn");
 
     try {
-        await Promise.all([refreshDashboard(), loadEnquiries(), loadSubscribers(), loadCourses(), loadNotices()]);
+        await Promise.all([
+            refreshDashboard(),
+            loadEnquiries(),
+            loadSubscribers(),
+            loadCourses(),
+            loadDepartments(),
+            loadPlacementDrives(),
+            loadNotices()
+        ]);
     } catch (error) {
         alert(error.message || "Unable to load dashboard data.");
     }
@@ -626,6 +931,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     clearSubscribersButton?.addEventListener("click", clearSubscribers);
     courseForm?.addEventListener("submit", saveCourse);
     cancelCourseEdit?.addEventListener("click", resetCourseForm);
+    departmentForm?.addEventListener("submit", saveDepartment);
+    cancelDepartmentEdit?.addEventListener("click", resetDepartmentForm);
+    placementForm?.addEventListener("submit", savePlacementDrive);
+    cancelPlacementEdit?.addEventListener("click", resetPlacementForm);
     noticeForm?.addEventListener("submit", saveNotice);
     cancelNoticeEdit?.addEventListener("click", resetNoticeForm);
     modalClose?.addEventListener("click", closeEnquiryModal);

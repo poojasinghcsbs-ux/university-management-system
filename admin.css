@@ -927,6 +927,22 @@ tbody tr:hover {
     gap: 15px;
 }
 
+.department-form-grid {
+    display: grid;
+
+    grid-template-columns: 2fr 1fr 1.5fr;
+
+    gap: 15px;
+}
+
+.placement-form-grid {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 15px;
+}
+
 .notice-field {
     display: flex;
 
@@ -940,6 +956,18 @@ tbody tr:hover {
 }
 
 .course-description-field {
+    grid-column: 1 / -1;
+}
+
+.department-description-field {
+    grid-column: 1 / -1;
+}
+
+.placement-eligibility-field {
+    grid-column: span 2;
+}
+
+.placement-description-field {
     grid-column: 1 / -1;
 }
 
@@ -996,7 +1024,9 @@ tbody tr:hover {
 .notice-save-btn,
 .notice-cancel-btn,
 .notice-edit-btn,
-.course-edit-btn {
+.course-edit-btn,
+.placement-edit-btn,
+.department-edit-btn {
     border: none;
 
     border-radius: 7px;
@@ -1032,7 +1062,9 @@ tbody tr:hover {
 
 .notice-cancel-btn,
 .notice-edit-btn,
-.course-edit-btn {
+.course-edit-btn,
+.placement-edit-btn,
+.department-edit-btn {
     background: #edf3fa;
 
     color: #173b67;
@@ -1040,7 +1072,9 @@ tbody tr:hover {
 
 .notice-cancel-btn:hover,
 .notice-edit-btn:hover,
-.course-edit-btn:hover {
+.course-edit-btn:hover,
+.placement-edit-btn:hover,
+.department-edit-btn:hover {
     background: #173b67;
 
     color: white;
@@ -1081,11 +1115,28 @@ tbody tr:hover {
         grid-template-columns: 1fr;
     }
 
+    .department-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .placement-form-grid {
+        grid-template-columns: 1fr;
+    }
+
     .notice-description-field {
         grid-column: auto;
     }
 
     .course-description-field {
+        grid-column: auto;
+    }
+
+    .department-description-field {
+        grid-column: auto;
+    }
+
+    .placement-eligibility-field,
+    .placement-description-field {
         grid-column: auto;
     }
 

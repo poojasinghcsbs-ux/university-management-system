@@ -551,6 +551,88 @@ loadPublicCourses();
 
 
 // =====================================================
+//                  DEPARTMENTS API
+// =====================================================
+
+async function loadPublicDepartments() {
+    const departmentContainer = document.getElementById("departmentContainer");
+    if (!departmentContainer) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/departments`);
+        const departments = await response.json().catch(() => []);
+
+        if (!response.ok || !Array.isArray(departments) || departments.length === 0) {
+            return;
+        }
+
+        departmentContainer.innerHTML = departments.map((department) => `
+            <article class="department-card">
+                <span>${escapeNoticeHTML(department.departmentCode)}</span>
+                <h3>${escapeNoticeHTML(department.name)}</h3>
+                <p>${escapeNoticeHTML(department.description)}</p>
+                <small class="department-hod">Head: ${escapeNoticeHTML(department.hodName)}</small>
+            </article>`).join("");
+    } catch (error) {
+        // The existing static department cards remain visible if the API is unavailable.
+    }
+}
+
+loadPublicDepartments();
+
+
+// =====================================================
+//                 PLACEMENT DRIVES API
+// =====================================================
+
+function formatPublicPlacementDate(value) {
+    if (!value) {
+        return "";
+    }
+    return new Intl.DateTimeFormat("en-IN", {
+        dateStyle: "medium",
+        timeZone: "UTC"
+    }).format(new Date(`${value}T00:00:00Z`));
+}
+
+async function loadPublicPlacementDrives() {
+    const placementDriveWrapper = document.getElementById("placementDriveWrapper");
+    const placementDriveContainer = document.getElementById("placementDriveContainer");
+    if (!placementDriveWrapper || !placementDriveContainer) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/placements`);
+        const drives = await response.json().catch(() => []);
+
+        if (!response.ok || !Array.isArray(drives) || drives.length === 0) {
+            return;
+        }
+
+        placementDriveContainer.innerHTML = drives.slice(0, 6).map((drive) => `
+            <article class="placement-drive-card">
+                <h3>${escapeNoticeHTML(drive.companyName)}</h3>
+                <p class="placement-drive-role">${escapeNoticeHTML(drive.jobRole)}</p>
+                <p>${escapeNoticeHTML(drive.description)}</p>
+                <div class="placement-drive-meta">
+                    <span><strong>Package:</strong> ${escapeNoticeHTML(drive.packageOffered)}</span>
+                    <span><strong>Eligibility:</strong> ${escapeNoticeHTML(drive.eligibility)}</span>
+                    <span><strong>Drive Date:</strong> ${escapeNoticeHTML(formatPublicPlacementDate(drive.driveDate))}</span>
+                </div>
+            </article>`).join("");
+        placementDriveWrapper.hidden = false;
+    } catch (error) {
+        // The placement highlights remain visible if the API is unavailable.
+    }
+}
+
+loadPublicPlacementDrives();
+
+
+// =====================================================
 //                 CONTACT FORM VALIDATION
 // =====================================================
 
