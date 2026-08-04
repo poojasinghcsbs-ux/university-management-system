@@ -25,6 +25,15 @@ function formatEnquiryType(type) {
     return types[type] || type || "-";
 }
 
+function formatStatus(status) {
+    const statuses = {
+        NEW: "New",
+        IN_PROGRESS: "In Progress",
+        RESOLVED: "Resolved"
+    };
+    return statuses[status] || "New";
+}
+
 function formatDateTime(value) {
     if (!value) {
         return "-";
@@ -104,6 +113,16 @@ function displayEnquiries() {
             <td class="message-cell">${escapeHTML(enquiry.message)}</td>
             <td>${escapeHTML(formatDateTime(enquiry.createdAt))}</td>
             <td>
+                <div class="status-control">
+                    <select class="status-select" data-id="${enquiry.id}" aria-label="Enquiry status">
+                        <option value="NEW" ${enquiry.status === "NEW" ? "selected" : ""}>New</option>
+                        <option value="IN_PROGRESS" ${enquiry.status === "IN_PROGRESS" ? "selected" : ""}>In Progress</option>
+                        <option value="RESOLVED" ${enquiry.status === "RESOLVED" ? "selected" : ""}>Resolved</option>
+                    </select>
+                    <button type="button" class="status-update-btn" data-id="${enquiry.id}">Update</button>
+                </div>
+            </td>
+            <td>
                 <button type="button" class="view-btn" data-id="${enquiry.id}">View Details</button>
                 <button type="button" class="delete-btn" data-id="${enquiry.id}">Delete</button>
             </td>`;
@@ -115,6 +134,13 @@ function displayEnquiries() {
     });
     tableBody.querySelectorAll(".delete-btn").forEach((button) => {
         button.addEventListener("click", () => deleteEnquiry(Number(button.dataset.id)));
+    });
+    tableBody.querySelectorAll(".status-update-btn").forEach((button) => {
+        button.addEventListener("click", () => {
+            const id = Number(button.dataset.id);
+            const statusSelect = tableBody.querySelector(`.status-select[data-id="${id}"]`);
+            updateEnquiryStatus(id, statusSelect?.value, button);
+        });
     });
 }
 
@@ -167,6 +193,31 @@ async function deleteSubscriber(id) {
     }
 }
 
+async function updateEnquiryStatus(id, status, button) {
+    if (!status) {
+        return;
+    }
+
+    const defaultButtonText = button.textContent;
+    button.disabled = true;
+    button.textContent = "Saving...";
+
+    try {
+        const updatedEnquiry = await apiRequest(`/admin/enquiries/${id}/status`, {
+            method: "PATCH",
+            body: JSON.stringify({ status })
+        });
+        currentEnquiries = currentEnquiries.map((enquiry) =>
+            enquiry.id === id ? updatedEnquiry : enquiry
+        );
+        displayEnquiries();
+    } catch (error) {
+        alert(error.message);
+        button.disabled = false;
+        button.textContent = defaultButtonText;
+    }
+}
+
 function openEnquiryModal(id) {
     const enquiry = currentEnquiries.find((item) => item.id === id);
     const enquiryModal = document.getElementById("enquiryModal");
@@ -177,7 +228,8 @@ function openEnquiryModal(id) {
     setText("modalName", enquiry.fullName);
     setText("modalEmail", enquiry.email);
     setText("modalMobile", enquiry.mobile);
-    setText("modalType", `${formatEnquiryType(enquiry.enquiryType)} (${enquiry.status})`);
+    setText("modalType", formatEnquiryType(enquiry.enquiryType));
+    setText("modalStatus", formatStatus(enquiry.status));
     setText("modalDate", formatDateTime(enquiry.createdAt));
     setText("modalMessage", enquiry.message);
     enquiryModal.classList.add("show-modal");

@@ -19,7 +19,7 @@ The project is designed as a practical university management portal. Visitors ca
 - Secure administrator login backed by a Spring Boot API
 - Token-based session for protected admin requests
 - Dashboard statistics for enquiries and subscribers
-- Search, view, and delete enquiries
+- Search, view, update status, and delete enquiries
 - View and delete newsletter subscribers
 - Database-driven records instead of browser-only storage
 
@@ -144,11 +144,10 @@ Open `indexxx.html` with Live Server in VS Code, or run it through any local sta
 
 ## Current Status
 
-The portal has a complete responsive frontend and a working Spring Boot + MySQL backend for authentication, enquiries, newsletter data, and dashboard management. The public contact and newsletter forms are connected to the REST API, so submitted data is stored in MySQL and available in the admin dashboard. The next enhancements include adding enquiry status management to the admin interface and preparing a production deployment configuration.
+The portal has a complete responsive frontend and a working Spring Boot + MySQL backend for authentication, enquiries, newsletter data, and dashboard management. The public contact and newsletter forms are connected to the REST API, so submitted data is stored in MySQL and available in the admin dashboard. Administrators can search, view, delete, and update enquiry status from the dashboard. The next enhancement is preparing a production deployment configuration.
 
 ## Future Enhancements
 
-- Enquiry status updates from the dashboard
 - Notices, courses, departments, and placement content managed through the admin panel
 - Role-based access for multiple administrators
 - Email confirmations for enquiries and newsletter subscriptions
