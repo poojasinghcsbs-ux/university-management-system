@@ -144,7 +144,7 @@ Open `indexxx.html` with Live Server in VS Code, or run it through any local sta
 
 ## Current Status
 
-The portal has a complete responsive frontend and a working Spring Boot + MySQL backend for authentication, enquiries, newsletter data, and dashboard management. The next enhancements include connecting the public contact and newsletter submit events to their API endpoints, adding status management to the admin interface, and preparing a production deployment configuration.
+The portal has a complete responsive frontend and a working Spring Boot + MySQL backend for authentication, enquiries, newsletter data, and dashboard management. The public contact and newsletter forms are connected to the REST API, so submitted data is stored in MySQL and available in the admin dashboard. The next enhancements include adding enquiry status management to the admin interface and preparing a production deployment configuration.
 
 ## Future Enhancements
 

@@ -386,7 +386,7 @@ document.addEventListener("keydown", (event) => {
 
 
 // =====================================================
-//             SAVE ENQUIRY TO LOCAL STORAGE
+//             SAVE PUBLIC FORM DATA THROUGH API
 // =====================================================
 
 async function saveEnquiry(enquiry) {
@@ -408,6 +408,25 @@ async function saveEnquiry(enquiry) {
     return data;
 }
 
+async function subscribeToNewsletter(email) {
+
+    const response = await fetch(`${API_BASE_URL}/newsletter`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email })
+    });
+
+    const data = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+        throw new Error(data.message || "Unable to subscribe right now.");
+    }
+
+    return data;
+}
+
 
 // =====================================================
 //                 CONTACT FORM VALIDATION
@@ -420,7 +439,7 @@ const formSuccess = document.getElementById("formSuccess");
 
 if (contactForm) {
 
-    contactForm.addEventListener("submit", (event) => {
+    contactForm.addEventListener("submit", async (event) => {
 
         event.preventDefault();
 
@@ -528,66 +547,47 @@ if (contactForm) {
         //            SAVE FORM IF EVERYTHING IS VALID
         // =====================================================
 
-        if (isValid) {
+        if (!isValid) {
+            return;
+        }
 
-            const enquiryData = {
+        const submitButton =
+            contactForm.querySelector('button[type="submit"]');
 
-                id: Date.now(),
+        const defaultButtonText = submitButton?.textContent;
 
-                name: fullName.value.trim(),
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = "Submitting...";
+        }
 
+        try {
+            await saveEnquiry({
+                fullName: fullName.value.trim(),
                 email: email.value.trim(),
-
                 mobile: mobile.value.trim(),
-
                 enquiryType: enquiryType.value,
-
-                message: message.value.trim(),
-
-                date: new Date().toLocaleDateString("en-IN"),
-
-                time: new Date().toLocaleTimeString(
-                    "en-IN",
-                    {
-                        hour: "2-digit",
-                        minute: "2-digit"
-                    }
-                )
-            };
-
-
-            // SAVE TO BROWSER
-
-            saveEnquiry(enquiryData);
-
-
-            // SHOW SUCCESS MESSAGE
+                message: message.value.trim()
+            });
 
             if (formSuccess) {
-
-                formSuccess.classList.add(
-                    "show-success"
-                );
+                formSuccess.textContent =
+                    "✓ Thank you! Your enquiry has been submitted successfully.";
+                formSuccess.classList.add("show-success");
             }
-
-
-            // CLEAR FORM
 
             contactForm.reset();
 
-
-            // HIDE SUCCESS MESSAGE AFTER 5 SECONDS
-
             setTimeout(() => {
-
-                if (formSuccess) {
-
-                    formSuccess.classList.remove(
-                        "show-success"
-                    );
-                }
-
+                formSuccess?.classList.remove("show-success");
             }, 5000);
+        } catch (error) {
+            alert(error.message || "Unable to submit your enquiry. Please try again.");
+        } finally {
+            if (submitButton) {
+                submitButton.disabled = false;
+                submitButton.textContent = defaultButtonText;
+            }
         }
     });
 }
@@ -700,7 +700,7 @@ if (
     newsletterMessage
 ) {
 
-    newsletterForm.addEventListener("submit", (event) => {
+    newsletterForm.addEventListener("submit", async (event) => {
 
         event.preventDefault();
 
@@ -722,69 +722,33 @@ if (
         }
 
 
-        // Save newsletter subscriber
+        const submitButton =
+            newsletterForm.querySelector('button[type="submit"]');
 
-        let subscribers = [];
+        const defaultButtonText = submitButton?.textContent;
+
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = "Subscribing...";
+        }
 
         try {
-
-            subscribers =
-                JSON.parse(
-                    localStorage.getItem("rgpvSubscribers")
-                ) || [];
-
-        } catch (error) {
-
-            subscribers = [];
-        }
-
-
-        // Prevent duplicate email
-
-        const alreadySubscribed =
-            subscribers.some(
-                (subscriber) =>
-                    subscriber.email.toLowerCase() ===
-                    email.toLowerCase()
-            );
-
-
-        if (alreadySubscribed) {
-
+            await subscribeToNewsletter(email);
             newsletterMessage.textContent =
-                "You are already subscribed.";
-
-            return;
+                "✓ You're subscribed! Thank you for staying connected with RGPV.";
+            newsletterEmail.value = "";
+        } catch (error) {
+            newsletterMessage.textContent =
+                error.message || "Unable to subscribe right now. Please try again.";
+        } finally {
+            if (submitButton) {
+                submitButton.disabled = false;
+                submitButton.textContent = defaultButtonText;
+            }
         }
-
-
-        subscribers.push({
-
-            id: Date.now(),
-
-            email: email,
-
-            date: new Date().toLocaleDateString("en-IN")
-        });
-
-
-        localStorage.setItem(
-            "rgpvSubscribers",
-            JSON.stringify(subscribers)
-        );
-
-
-        newsletterMessage.textContent =
-            "✓ You're subscribed! Thank you for staying connected with RGPV.";
-
-
-        newsletterEmail.value = "";
-
 
         setTimeout(() => {
-
             newsletterMessage.textContent = "";
-
         }, 5000);
     });
 }

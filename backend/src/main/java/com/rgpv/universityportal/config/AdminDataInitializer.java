@@ -35,7 +35,14 @@ public class AdminDataInitializer implements CommandLineRunner {
             LOGGER.warn("No admin user was created. Set ADMIN_PASSWORD before starting the API.");
             return;
         }
-        if (adminUserRepository.findByUsername(username).isPresent()) {
+        AdminUser existingAdmin = adminUserRepository.findByUsername(username).orElse(null);
+
+        if (existingAdmin != null) {
+            if (!passwordEncoder.matches(password, existingAdmin.getPasswordHash())) {
+                existingAdmin.setPasswordHash(passwordEncoder.encode(password));
+                adminUserRepository.save(existingAdmin);
+                LOGGER.info("Updated the configured admin password for: {}", username);
+            }
             return;
         }
 
