@@ -1,9 +1,6 @@
 const API_BASE_URL = (window.UNIVERSITY_PORTAL_API_URL || "http://localhost:8080/api")
     .replace(/\/$/, "");
 
-// =====================================================
-//                    PAGE LOADER
-// =====================================================
 
 const pageLoader = document.getElementById("pageLoader");
 
@@ -16,9 +13,6 @@ window.addEventListener("load", () => {
 });
 
 
-// =====================================================
-//                 CURRENT YEAR IN FOOTER
-// =====================================================
 
 const currentYear = document.getElementById("currentYear");
 
@@ -27,9 +21,6 @@ if (currentYear) {
 }
 
 
-// =====================================================
-//                    NAVBAR SCROLL
-// =====================================================
 
 const navbar = document.getElementById("navbar");
 
@@ -45,9 +36,6 @@ window.addEventListener("scroll", () => {
 });
 
 
-// =====================================================
-//                  SCROLL PROGRESS BAR
-// =====================================================
 
 const scrollProgress = document.getElementById("scrollProgress");
 
@@ -72,9 +60,6 @@ window.addEventListener("scroll", () => {
 });
 
 
-// =====================================================
-//                  MOBILE NAVIGATION
-// =====================================================
 
 const menuToggle = document.getElementById("menuToggle");
 const navLinks = document.getElementById("navLinks");
@@ -105,9 +90,6 @@ if (menuToggle && navLinks) {
 }
 
 
-// =====================================================
-//                    SMOOTH SCROLL
-// =====================================================
 
 document.querySelectorAll('a[href^="#"]').forEach((link) => {
 
@@ -132,9 +114,6 @@ document.querySelectorAll('a[href^="#"]').forEach((link) => {
 });
 
 
-// =====================================================
-//                 ACTIVE NAVBAR LINK
-// =====================================================
 
 const sections = document.querySelectorAll("section[id]");
 const navigationLinks = document.querySelectorAll(".nav-link");
@@ -166,9 +145,6 @@ function updateActiveNavigation() {
 window.addEventListener("scroll", updateActiveNavigation);
 
 
-// =====================================================
-//                   REVEAL ON SCROLL
-// =====================================================
 
 const revealElements = document.querySelectorAll(".reveal");
 
@@ -195,9 +171,6 @@ revealElements.forEach((element) => {
 });
 
 
-// =====================================================
-//                  ANIMATED COUNTERS
-// =====================================================
 
 const counters = document.querySelectorAll(".counter");
 
@@ -259,9 +232,6 @@ counters.forEach((counter) => {
 });
 
 
-// =====================================================
-//                    BACK TO TOP
-// =====================================================
 
 const backToTop = document.getElementById("backToTop");
 
@@ -292,9 +262,6 @@ if (backToTop) {
 }
 
 
-// =====================================================
-//                    GALLERY LIGHTBOX
-// =====================================================
 
 const galleryItems = document.querySelectorAll(".gallery-item");
 
@@ -386,9 +353,6 @@ document.addEventListener("keydown", (event) => {
 });
 
 
-// =====================================================
-//             SAVE PUBLIC FORM DATA THROUGH API
-// =====================================================
 
 async function saveEnquiry(enquiry) {
 
@@ -429,9 +393,6 @@ async function subscribeToNewsletter(email) {
 }
 
 
-// =====================================================
-//                  LATEST NOTICES API
-// =====================================================
 
 function escapeNoticeHTML(value) {
     const element = document.createElement("div");
@@ -486,16 +447,12 @@ async function loadPublicNotices() {
                 </div>
             </article>`).join("");
     } catch (error) {
-        // The existing static notices remain visible if the API is unavailable.
     }
 }
 
 loadPublicNotices();
 
 
-// =====================================================
-//                  PROGRAMMES API
-// =====================================================
 
 function getCourseIcon(courseType) {
     const icons = {
@@ -550,16 +507,12 @@ async function loadPublicCourses() {
                 <a class="card-action" href="#contact">Ask about this programme <span aria-hidden="true">&rarr;</span></a>
             </article>`).join("");
     } catch (error) {
-        // The existing static course cards remain visible if the API is unavailable.
     }
 }
 
 loadPublicCourses();
 
 
-// =====================================================
-//                  DEPARTMENTS API
-// =====================================================
 
 async function loadPublicDepartments() {
     const departmentContainer = document.getElementById("departmentContainer");
@@ -589,16 +542,12 @@ async function loadPublicDepartments() {
                 </div>
             </article>`).join("");
     } catch (error) {
-        // The existing static department cards remain visible if the API is unavailable.
     }
 }
 
 loadPublicDepartments();
 
 
-// =====================================================
-//                 PLACEMENT DRIVES API
-// =====================================================
 
 function formatPublicPlacementDate(value) {
     if (!value) {
@@ -642,16 +591,12 @@ async function loadPublicPlacementDrives() {
             </article>`).join("");
         placementDriveWrapper.hidden = false;
     } catch (error) {
-        // The placement highlights remain visible if the API is unavailable.
     }
 }
 
 loadPublicPlacementDrives();
 
 
-// =====================================================
-//                 CONTACT FORM VALIDATION
-// =====================================================
 
 const contactForm = document.getElementById("contactForm");
 
@@ -682,9 +627,6 @@ if (contactForm) {
         clearErrors();
 
 
-        // -----------------------------
-        // NAME VALIDATION
-        // -----------------------------
 
         if (fullName.value.trim().length < 3) {
 
@@ -697,9 +639,6 @@ if (contactForm) {
         }
 
 
-        // -----------------------------
-        // EMAIL VALIDATION
-        // -----------------------------
 
         const emailPattern =
             /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -716,9 +655,6 @@ if (contactForm) {
         }
 
 
-        // -----------------------------
-        // MOBILE VALIDATION
-        // -----------------------------
 
         const mobilePattern = /^[6-9]\d{9}$/;
 
@@ -734,9 +670,6 @@ if (contactForm) {
         }
 
 
-        // -----------------------------
-        // ENQUIRY TYPE VALIDATION
-        // -----------------------------
 
         if (enquiryType.value === "") {
 
@@ -749,9 +682,6 @@ if (contactForm) {
         }
 
 
-        // -----------------------------
-        // MESSAGE VALIDATION
-        // -----------------------------
 
         if (message.value.trim().length < 10) {
 
@@ -764,9 +694,6 @@ if (contactForm) {
         }
 
 
-        // =====================================================
-        //            SAVE FORM IF EVERYTHING IS VALID
-        // =====================================================
 
         if (!isValid) {
             return;
@@ -814,9 +741,6 @@ if (contactForm) {
 }
 
 
-// =====================================================
-//                 FORM ERROR FUNCTIONS
-// =====================================================
 
 function showError(input, message) {
 
@@ -862,9 +786,6 @@ function clearErrors() {
 }
 
 
-// =====================================================
-//        REMOVE ERROR WHILE USER IS TYPING
-// =====================================================
 
 document
     .querySelectorAll(
@@ -901,9 +822,6 @@ document
     });
 
 
-// =====================================================
-//                 NEWSLETTER FORM
-// =====================================================
 
 const newsletterForm =
     document.getElementById("newsletterForm");
@@ -975,9 +893,6 @@ if (
 }
 
 
-// =====================================================
-//             COURSE CARD INTERACTION
-// =====================================================
 
 const courseCards = document.querySelectorAll(".course-card");
 
