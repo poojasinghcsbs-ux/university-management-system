@@ -536,12 +536,18 @@ async function loadPublicCourses() {
         }
 
         courseContainer.innerHTML = courses.map((course) => `
-            <article class="course-card">
-                <div class="course-icon">${getCourseIcon(course.courseType)}</div>
+            <article class="course-card programme-card">
+                <div class="course-card-header">
+                    <div class="course-icon" aria-hidden="true">${getCourseIcon(course.courseType)}</div>
+                    <span class="course-type-badge">${escapeNoticeHTML(formatPublicCourseType(course.courseType))}</span>
+                </div>
                 <h3>${escapeNoticeHTML(course.name)}</h3>
                 <p>${escapeNoticeHTML(course.description)}</p>
-                <small class="course-meta">${escapeNoticeHTML(course.department)} · ${escapeNoticeHTML(course.duration)} · ${escapeNoticeHTML(formatPublicCourseType(course.courseType))}</small>
-                <a href="#contact">Explore Course &rarr;</a>
+                <div class="course-meta-list" aria-label="Programme details">
+                    <span><strong>Department</strong>${escapeNoticeHTML(course.department)}</span>
+                    <span><strong>Duration</strong>${escapeNoticeHTML(course.duration)}</span>
+                </div>
+                <a class="card-action" href="#contact">Ask about this programme <span aria-hidden="true">&rarr;</span></a>
             </article>`).join("");
     } catch (error) {
         // The existing static course cards remain visible if the API is unavailable.
@@ -571,10 +577,16 @@ async function loadPublicDepartments() {
 
         departmentContainer.innerHTML = departments.map((department) => `
             <article class="department-card">
-                <span>${escapeNoticeHTML(department.departmentCode)}</span>
+                <div class="department-card-header">
+                    <span class="department-code">${escapeNoticeHTML(department.departmentCode)}</span>
+                    <span class="department-label">Academic Department</span>
+                </div>
                 <h3>${escapeNoticeHTML(department.name)}</h3>
                 <p>${escapeNoticeHTML(department.description)}</p>
-                <small class="department-hod">Head: ${escapeNoticeHTML(department.hodName)}</small>
+                <div class="department-card-footer">
+                    <span>Academic lead</span>
+                    <strong>${escapeNoticeHTML(department.hodName)}</strong>
+                </div>
             </article>`).join("");
     } catch (error) {
         // The existing static department cards remain visible if the API is unavailable.
@@ -615,14 +627,18 @@ async function loadPublicPlacementDrives() {
 
         placementDriveContainer.innerHTML = drives.slice(0, 6).map((drive) => `
             <article class="placement-drive-card">
+                <div class="placement-drive-topline">
+                    <span class="placement-drive-label">RECRUITMENT UPDATE</span>
+                    <span class="placement-drive-date">${escapeNoticeHTML(formatPublicPlacementDate(drive.driveDate))}</span>
+                </div>
                 <h3>${escapeNoticeHTML(drive.companyName)}</h3>
                 <p class="placement-drive-role">${escapeNoticeHTML(drive.jobRole)}</p>
-                <p>${escapeNoticeHTML(drive.description)}</p>
-                <div class="placement-drive-meta">
-                    <span><strong>Package:</strong> ${escapeNoticeHTML(drive.packageOffered)}</span>
-                    <span><strong>Eligibility:</strong> ${escapeNoticeHTML(drive.eligibility)}</span>
-                    <span><strong>Drive Date:</strong> ${escapeNoticeHTML(formatPublicPlacementDate(drive.driveDate))}</span>
-                </div>
+                <p class="placement-drive-description">${escapeNoticeHTML(drive.description)}</p>
+                <dl class="placement-drive-meta">
+                    <div><dt>Package</dt><dd>${escapeNoticeHTML(drive.packageOffered)}</dd></div>
+                    <div><dt>Eligibility</dt><dd>${escapeNoticeHTML(drive.eligibility)}</dd></div>
+                </dl>
+                <a class="placement-drive-action" href="#contact">Enquire about this drive <span aria-hidden="true">&rarr;</span></a>
             </article>`).join("");
         placementDriveWrapper.hidden = false;
     } catch (error) {

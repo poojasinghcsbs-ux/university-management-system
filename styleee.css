@@ -692,6 +692,52 @@ textarea {
         box-shadow 0.35s;
 }
 
+.programme-card {
+    display: flex;
+
+    flex-direction: column;
+
+    min-height: 100%;
+}
+
+.course-card-header {
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 14px;
+}
+
+.course-card-header .course-icon {
+    margin-bottom: 18px;
+}
+
+.course-type-badge {
+    display: inline-flex;
+
+    align-items: center;
+
+    min-height: 26px;
+
+    padding: 5px 9px;
+
+    border-radius: 999px;
+
+    background: #edf4fb;
+
+    color: #173b67;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.7px;
+
+    text-transform: uppercase;
+}
+
 .course-card:hover {
     transform: translateY(-9px);
 
@@ -758,6 +804,67 @@ textarea {
     color: #c89500;
 }
 
+.course-meta-list {
+    display: grid;
+
+    gap: 8px;
+
+    margin: 20px 0;
+
+    padding: 15px 0;
+
+    border-top: 1px solid #e6edf5;
+
+    border-bottom: 1px solid #e6edf5;
+}
+
+.course-meta-list span {
+    display: grid;
+
+    gap: 3px;
+
+    color: #506378;
+
+    font-size: 13px;
+
+    line-height: 1.4;
+}
+
+.course-meta-list strong {
+    color: #173b67;
+
+    font-size: 10px;
+
+    letter-spacing: 0.8px;
+
+    text-transform: uppercase;
+}
+
+.card-action,
+.placement-drive-action {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-top: auto;
+}
+
+.card-action span,
+.placement-drive-action span {
+    font-size: 18px;
+
+    line-height: 1;
+
+    transition: transform 0.25s ease;
+}
+
+.card-action:hover span,
+.placement-drive-action:hover span {
+    transform: translateX(4px);
+}
+
 .featured-card {
     border-top-color: #f4c430;
 }
@@ -792,6 +899,20 @@ textarea {
     border-radius: 12px;
 
     transition: 0.3s;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+.department-card-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 14px;
 }
 
 .department-card:hover {
@@ -809,6 +930,36 @@ textarea {
     font-weight: bold;
 }
 
+.department-card .department-code {
+    display: inline-flex;
+
+    width: fit-content;
+
+    padding: 6px 9px;
+
+    border-radius: 6px;
+
+    background: #fff7df;
+
+    color: #a87500;
+
+    font-size: 11px;
+
+    letter-spacing: 0.8px;
+}
+
+.department-card .department-label {
+    color: #8090a2;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.8px;
+
+    text-transform: uppercase;
+}
+
 .department-card h3 {
     color: #173b67;
 
@@ -821,6 +972,38 @@ textarea {
     color: #666;
 
     font-size: 15px;
+}
+
+.department-card-footer {
+    display: grid;
+
+    gap: 4px;
+
+    margin-top: 22px;
+
+    padding-top: 15px;
+
+    border-top: 1px solid #e6edf5;
+}
+
+.department-card .department-card-footer span {
+    color: #8090a2;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.8px;
+
+    text-transform: uppercase;
+}
+
+.department-card-footer strong {
+    color: #173b67;
+
+    font-size: 13px;
+
+    line-height: 1.4;
 }
 
 .department-hod {
@@ -1151,6 +1334,42 @@ textarea {
     transition: 0.3s;
 }
 
+.placement-drive-topline {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-bottom: 18px;
+}
+
+.placement-drive-label {
+    color: #a87500;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.9px;
+}
+
+.placement-drive-date {
+    padding: 5px 8px;
+
+    border-radius: 6px;
+
+    background: #edf4fb;
+
+    color: #173b67;
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
 .placement-drive-card:hover {
     transform: translateY(-7px);
 
@@ -1181,6 +1400,10 @@ textarea {
     line-height: 1.55;
 }
 
+.placement-drive-description {
+    min-height: 66px;
+}
+
 .placement-drive-meta {
     display: grid;
 
@@ -1201,6 +1424,48 @@ textarea {
 
 .placement-drive-meta strong {
     color: #173b67;
+}
+
+.placement-drive-meta div {
+    display: grid;
+
+    gap: 3px;
+}
+
+.placement-drive-meta dt {
+    color: #8090a2;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.8px;
+
+    text-transform: uppercase;
+}
+
+.placement-drive-meta dd {
+    margin: 0;
+
+    color: #40556d;
+
+    font-size: 13px;
+
+    line-height: 1.45;
+}
+
+.placement-drive-action {
+    margin-top: 20px;
+
+    color: #173b67;
+
+    font-size: 13px;
+
+    font-weight: 800;
+}
+
+.placement-drive-action:hover {
+    color: #a87500;
 }
 
 @media (max-width: 900px) {
