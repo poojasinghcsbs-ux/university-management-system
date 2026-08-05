@@ -214,6 +214,9 @@
                     <h2>
                         Manage Departments
                     </h2>
+                    <p class="management-description">
+                        Build clear academic profiles that students can explore on the public website.
+                    </p>
                 </div>
 
             </div>
@@ -223,30 +226,39 @@
 
                 <input type="hidden" id="departmentId">
 
+                <div class="form-guidance" role="note">
+                    <span>PUBLIC PROFILE</span>
+                    <p>Use the official department name and a concise description. Saved details are displayed in the website's Departments section.</p>
+                </div>
+
                 <div class="department-form-grid">
 
                     <div class="notice-field">
-                        <label for="departmentName">Department Name</label>
+                        <label for="departmentName">Official Department Name</label>
                         <input id="departmentName" type="text" maxlength="140"
-                            placeholder="For example: Computer Science & Engineering" required>
+                            placeholder="For example: Department of Computer Science & Engineering" required>
+                        <small class="field-help">Use the name exactly as it appears in university material.</small>
                     </div>
 
                     <div class="notice-field">
-                        <label for="departmentCode">Department Code</label>
+                        <label for="departmentCode">Short Department Code</label>
                         <input id="departmentCode" type="text" maxlength="30"
                             placeholder="For example: CSE" required>
+                        <small class="field-help">A short identifier shown on the public card.</small>
                     </div>
 
                     <div class="notice-field">
                         <label for="departmentHodName">Head of Department</label>
                         <input id="departmentHodName" type="text" maxlength="120"
-                            placeholder="For example: Dr. A. Sharma" required>
+                            placeholder="For example: Dr. A. Sharma, Professor" required>
+                        <small class="field-help">Add the current academic head's name and designation.</small>
                     </div>
 
                     <div class="notice-field department-description-field">
-                        <label for="departmentDescription">Department Description</label>
+                        <label for="departmentDescription">Public Department Overview</label>
                         <textarea id="departmentDescription" rows="3" maxlength="2000"
-                            placeholder="Write a short overview of the department" required></textarea>
+                            placeholder="Mention the department's academic focus, laboratories, research areas, and student opportunities." required></textarea>
+                        <small class="field-help">Keep it student-friendly and factual. Maximum 2,000 characters.</small>
                     </div>
 
                 </div>
@@ -317,6 +329,9 @@
                     <h2>
                         Manage Courses
                     </h2>
+                    <p class="management-description">
+                        Publish accurate programme information to help students understand their academic options.
+                    </p>
                 </div>
 
             </div>
@@ -326,28 +341,36 @@
 
                 <input type="hidden" id="courseId">
 
+                <div class="form-guidance" role="note">
+                    <span>PUBLIC PROGRAMME</span>
+                    <p>Each saved programme appears in the Courses section with its department, duration, category, and overview.</p>
+                </div>
+
                 <div class="course-form-grid">
 
                     <div class="notice-field">
-                        <label for="courseName">Course Name</label>
+                        <label for="courseName">Programme Name</label>
                         <input id="courseName" type="text" maxlength="120"
-                            placeholder="For example: B.Tech Computer Science" required>
+                            placeholder="For example: B.Tech in Computer Science & Engineering" required>
+                        <small class="field-help">Write the complete official programme name.</small>
                     </div>
 
                     <div class="notice-field">
-                        <label for="courseDepartment">Department</label>
+                        <label for="courseDepartment">Academic Department</label>
                         <input id="courseDepartment" type="text" maxlength="120"
-                            placeholder="For example: Computer Science" required>
+                            placeholder="For example: Computer Science & Engineering" required>
+                        <small class="field-help">Mention the department responsible for this programme.</small>
                     </div>
 
                     <div class="notice-field">
-                        <label for="courseDuration">Duration</label>
+                        <label for="courseDuration">Programme Duration</label>
                         <input id="courseDuration" type="text" maxlength="50"
-                            placeholder="For example: 4 Years" required>
+                            placeholder="For example: 4 Years (8 Semesters)" required>
+                        <small class="field-help">Include years and semesters where relevant.</small>
                     </div>
 
                     <div class="notice-field">
-                        <label for="courseType">Course Type</label>
+                        <label for="courseType">Programme Category</label>
                         <select id="courseType" required>
                             <option value="">Select type</option>
                             <option value="ENGINEERING">Engineering</option>
@@ -360,9 +383,10 @@
                     </div>
 
                     <div class="notice-field course-description-field">
-                        <label for="courseDescription">Description</label>
+                        <label for="courseDescription">Programme Overview</label>
                         <textarea id="courseDescription" rows="3" maxlength="2000"
-                            placeholder="Write a short overview of this course" required></textarea>
+                            placeholder="Summarise core learning areas, practical exposure, and career direction for this programme." required></textarea>
+                        <small class="field-help">This description is visible to prospective students on the website.</small>
                     </div>
 
                 </div>
@@ -434,6 +458,9 @@
                     <h2>
                         Manage Placement Drives
                     </h2>
+                    <p class="management-description">
+                        Share verified recruitment opportunities with eligible students in a clear and timely format.
+                    </p>
                 </div>
 
             </div>
@@ -443,41 +470,52 @@
 
                 <input type="hidden" id="placementId">
 
+                <div class="form-guidance" role="note">
+                    <span>STUDENT OPPORTUNITY</span>
+                    <p>Only publish confirmed placement information. Students will see the company, role, package, eligibility, and drive date publicly.</p>
+                </div>
+
                 <div class="placement-form-grid">
 
                     <div class="notice-field">
-                        <label for="placementCompanyName">Company Name</label>
+                        <label for="placementCompanyName">Recruiting Organisation</label>
                         <input id="placementCompanyName" type="text" maxlength="120"
-                            placeholder="For example: Infosys" required>
+                            placeholder="For example: Infosys Limited" required>
+                        <small class="field-help">Enter the organisation's official name.</small>
                     </div>
 
                     <div class="notice-field">
-                        <label for="placementJobRole">Job Role</label>
+                        <label for="placementJobRole">Position Offered</label>
                         <input id="placementJobRole" type="text" maxlength="120"
-                            placeholder="For example: Systems Engineer" required>
+                            placeholder="For example: Systems Engineer Trainee" required>
+                        <small class="field-help">Mention the exact role in the offer or drive notice.</small>
                     </div>
 
                     <div class="notice-field">
-                        <label for="placementPackageOffered">Package Offered</label>
+                        <label for="placementPackageOffered">Annual Package / CTC</label>
                         <input id="placementPackageOffered" type="text" maxlength="80"
-                            placeholder="For example: 6.5 LPA" required>
+                            placeholder="For example: ₹6.5 LPA" required>
+                        <small class="field-help">Use the package figure officially shared by the recruiter.</small>
                     </div>
 
                     <div class="notice-field">
-                        <label for="placementDriveDate">Drive Date</label>
+                        <label for="placementDriveDate">Campus Drive Date</label>
                         <input id="placementDriveDate" type="date" required>
+                        <small class="field-help">Select the confirmed date of the recruitment drive.</small>
                     </div>
 
                     <div class="notice-field placement-eligibility-field">
-                        <label for="placementEligibility">Eligibility</label>
+                        <label for="placementEligibility">Eligible Programmes &amp; Criteria</label>
                         <input id="placementEligibility" type="text" maxlength="400"
-                            placeholder="For example: B.Tech / MCA, 60% throughout" required>
+                            placeholder="For example: B.Tech / MCA, minimum 60% throughout, no active backlogs" required>
+                        <small class="field-help">Include programmes, minimum marks, backlog policy, and graduation year if applicable.</small>
                     </div>
 
                     <div class="notice-field placement-description-field">
-                        <label for="placementDescription">Drive Details</label>
+                        <label for="placementDescription">Registration &amp; Selection Details</label>
                         <textarea id="placementDescription" rows="3" maxlength="2000"
-                            placeholder="Add registration, selection process, or other useful information" required></textarea>
+                            placeholder="Add registration deadline, application instructions, selection rounds, and coordinator information." required></textarea>
+                        <small class="field-help">Write only details that have been confirmed by the placement cell or recruiter.</small>
                     </div>
 
                 </div>
@@ -549,6 +587,9 @@
                     <h2>
                         Manage Notices
                     </h2>
+                    <p class="management-description">
+                        Publish important, verified university updates that are easy for students to understand.
+                    </p>
                 </div>
 
             </div>
@@ -558,16 +599,22 @@
 
                 <input type="hidden" id="noticeId">
 
+                <div class="form-guidance" role="note">
+                    <span>PUBLIC ANNOUNCEMENT</span>
+                    <p>Notices are shown in the Latest Notices section. Use a specific headline, the correct category, and a clear student-facing summary.</p>
+                </div>
+
                 <div class="notice-form-grid">
 
                     <div class="notice-field notice-title-field">
-                        <label for="noticeTitle">Notice Title</label>
+                        <label for="noticeTitle">Notice Headline</label>
                         <input id="noticeTitle" type="text" maxlength="180"
-                            placeholder="Enter notice title" required>
+                            placeholder="For example: B.Tech Mid-Semester Examination Schedule" required>
+                        <small class="field-help">Make the purpose clear in one concise headline.</small>
                     </div>
 
                     <div class="notice-field">
-                        <label for="noticeCategory">Category</label>
+                        <label for="noticeCategory">Notice Category</label>
                         <select id="noticeCategory" required>
                             <option value="">Select category</option>
                             <option value="ADMISSIONS">Admissions</option>
@@ -580,14 +627,16 @@
                     </div>
 
                     <div class="notice-field">
-                        <label for="noticeDate">Notice Date</label>
+                        <label for="noticeDate">Publication Date</label>
                         <input id="noticeDate" type="date" required>
+                        <small class="field-help">Use the official issue or publication date.</small>
                     </div>
 
                     <div class="notice-field notice-description-field">
-                        <label for="noticeDescription">Description</label>
+                        <label for="noticeDescription">Student-Facing Summary</label>
                         <textarea id="noticeDescription" rows="3" maxlength="2000"
-                            placeholder="Write a short notice description" required></textarea>
+                            placeholder="State what students need to know, who is affected, and any important deadline or next step." required></textarea>
+                        <small class="field-help">Keep the information accurate, complete, and easy to scan.</small>
                     </div>
 
                 </div>
