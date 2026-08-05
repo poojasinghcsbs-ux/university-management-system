@@ -9,6 +9,7 @@ Spring Boot REST API for the RGPV University Portal.
 - Newsletter subscription management
 - Dashboard summary data
 - MySQL persistence through Spring Data JPA
+- Notices, courses, departments, and placement-drive management
 
 ## Local Setup
 
@@ -30,6 +31,10 @@ app.jwt.secret=use_a_long_random_secret_here
 ```
 
 The API is available at `http://localhost:8080/api`.
+
+## Deployment
+
+For production environment variables, CORS configuration, frontend API setup, and final verification, see the project-level [DEPLOYMENT.md](../DEPLOYMENT.md).
 
 ## Health Check
 

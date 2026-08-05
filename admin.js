@@ -1,4 +1,5 @@
-const API_BASE_URL = "http://localhost:8080/api";
+const API_BASE_URL = (window.UNIVERSITY_PORTAL_API_URL || "http://localhost:8080/api")
+    .replace(/\/$/, "");
 const adminToken = sessionStorage.getItem("rgpvAdminToken");
 
 if (!adminToken) {

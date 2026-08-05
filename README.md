@@ -61,6 +61,8 @@ collage-website/
 |-- admin.html                   # Admin dashboard
 |-- admin.css
 |-- admin.js                     # Dashboard API integration
+|-- api-config.js                # Frontend API base URL configuration
+|-- DEPLOYMENT.md                # Production deployment steps
 |-- images/
 |
 |-- backend/
@@ -161,10 +163,15 @@ http://localhost:8080/api/health
 
 Open `indexxx.html` with Live Server in VS Code, or run it through any local static server. Keep the backend running while using the administration portal.
 
+## Deployment
+
+The portal is ready for separate frontend and backend deployment. Follow [DEPLOYMENT.md](DEPLOYMENT.md) to configure production environment variables, CORS, the public API URL, and final verification.
+
 ## Security Notes
 
 - `backend/application-local.properties` and `.env` are excluded from version control.
 - Never commit database passwords, admin passwords, or JWT secrets.
+- `JWT_SECRET` is required before the API starts; production CORS origins are configured with `CORS_ALLOWED_ORIGINS`.
 - The backend stores the configured admin password as a BCrypt hash.
 - Admin data APIs require a JWT token and reject unauthorised requests.
 

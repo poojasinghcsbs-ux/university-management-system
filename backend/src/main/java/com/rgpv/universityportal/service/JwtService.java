@@ -20,6 +20,9 @@ public class JwtService {
     public JwtService(
             @Value("${app.jwt.secret}") String secret,
             @Value("${app.jwt.expiration-hours}") long expirationHours) {
+        if (secret == null || secret.isBlank()) {
+            throw new IllegalStateException("JWT_SECRET must be configured before starting the API.");
+        }
         this.secret = secret;
         this.expiration = Duration.ofHours(expirationHours);
     }
