@@ -894,7 +894,7 @@ async function clearSubscribers() {
     }
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
+async function initializeAdminDashboard() {
     const searchEnquiry = document.getElementById("searchEnquiry");
     const clearEnquiriesButton = document.getElementById("clearEnquiries");
     const clearSubscribersButton = document.getElementById("clearSubscribers");
@@ -955,7 +955,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             window.location.replace("login.html");
         }
     });
-});
+}
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initializeAdminDashboard);
+} else {
+    initializeAdminDashboard();
+}
 
 document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
