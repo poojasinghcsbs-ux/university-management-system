@@ -1,4 +1,8 @@
-const API_BASE_URL = (window.UNIVERSITY_PORTAL_API_URL || "http://localhost:8080/api")
+const portalIsLocal = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+const portalDefaultApiUrl = portalIsLocal
+    ? "http://localhost:8080/api"
+    : `${window.location.origin}/api`;
+const API_BASE_URL = (window.UNIVERSITY_PORTAL_API_URL || portalDefaultApiUrl)
     .replace(/\/$/, "");
 
 document.addEventListener("DOMContentLoaded", () => {
