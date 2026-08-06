@@ -1,4 +1,8 @@
-const API_BASE_URL = (window.UNIVERSITY_PORTAL_API_URL || "http://localhost:8080/api")
+const portalIsLocal = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+const portalDefaultApiUrl = portalIsLocal
+    ? (window.UNIVERSITY_PORTAL_API_URL || "http://localhost:8080/api")
+    : "/api";
+const API_BASE_URL = portalDefaultApiUrl
     .replace(/\/$/, "");
 
 
