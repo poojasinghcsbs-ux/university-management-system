@@ -6,7 +6,7 @@ COPY backend ./backend
 
 WORKDIR /workspace/backend
 
-RUN ./mvnw -DskipTests package
+RUN chmod +x ./mvnw && ./mvnw -DskipTests package
 
 FROM eclipse-temurin:17-jre
 
