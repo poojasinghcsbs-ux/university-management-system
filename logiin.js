@@ -5,7 +5,7 @@ const portalDefaultApiUrl = portalIsLocal
 const API_BASE_URL = portalDefaultApiUrl
     .replace(/\/$/, "");
 
-document.addEventListener("DOMContentLoaded", () => {
+function initializeLogin() {
     const loginForm = document.getElementById("loginForm");
     const adminId = document.getElementById("adminId");
     const adminPassword = document.getElementById("adminPassword");
@@ -103,7 +103,13 @@ document.addEventListener("DOMContentLoaded", () => {
             loginButtonText.textContent = isLoading ? "Signing in..." : "Login";
         }
     }
-});
+}
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initializeLogin);
+} else {
+    initializeLogin();
+}
 
 function clearInputError(input, errorElement) {
     input.parentElement?.classList.remove("input-error");
