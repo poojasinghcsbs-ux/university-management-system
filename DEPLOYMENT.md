@@ -1,68 +1,66 @@
-# Deployment Guide
+# Railway Deployment Guide
 
-The portal has two parts that need to be deployed separately:
+This project is deployed as one full-stack Railway service. Spring Boot serves the website files and REST API from the same domain, while Railway MySQL stores the portal data.
 
-1. The Spring Boot API in `backend/`
-2. The static frontend files in the project root
+## Services
 
-Use a managed MySQL database and any hosting service that supports Java 17 for the API. The frontend can be hosted on any static-site service.
+- `university-management-system` - Spring Boot application and frontend files
+- `MySQL` - managed database
 
-## 1. Prepare the database
+## Deploy from GitHub
 
-Create an empty MySQL database. Create a separate application user that has access only to this database; do not use the MySQL root account in production.
+1. Create a Railway project and choose **Deploy from GitHub repo**.
+2. Select the `university-management-system` repository.
+3. Add a MySQL database service from the Railway project dashboard.
+4. Railway detects the root `Dockerfile` and builds the Java application with Maven.
+5. Generate a public Railway domain after the deployment succeeds.
 
-## 2. Deploy the backend
+## Environment variables
 
-Set the backend service root directory to `backend` and use these commands:
+Set the following variables on the application service. Values must be added only in Railway, never in GitHub.
 
-```text
-Build: ./mvnw package
-Start: java -jar target/university-portal-backend-0.0.1-SNAPSHOT.jar
-```
-
-On Windows, the build command is `./mvnw.cmd package`.
-
-Set these environment variables in the hosting dashboard. Do not put their values in GitHub.
-
-| Variable | Purpose |
+| Variable | Value or purpose |
 | --- | --- |
-| `PORT` | Supplied automatically by many hosting platforms; defaults to `8080` locally. |
-| `DB_URL` | JDBC URL for the production MySQL database. |
-| `DB_USERNAME` | Production application database username. |
-| `DB_PASSWORD` | Production application database password. |
-| `JWT_SECRET` | A long random secret used to sign admin sessions. |
-| `ADMIN_USERNAME` | Initial administrator username. |
-| `ADMIN_PASSWORD` | Initial administrator password. |
-| `CORS_ALLOWED_ORIGINS` | Public frontend URL, for example `https://your-site.example`. |
+| `SPRING_DATASOURCE_URL` | `jdbc:mysql://${{MySQL.MYSQLHOST}}:${{MySQL.MYSQLPORT}}/${{MySQL.MYSQLDATABASE}}` |
+| `SPRING_DATASOURCE_USERNAME` | `${{MySQL.MYSQLUSER}}` |
+| `SPRING_DATASOURCE_PASSWORD` | `${{MySQL.MYSQLPASSWORD}}` |
+| `SPRING_JPA_HIBERNATE_DDL_AUTO` | `update` |
+| `ADMIN_USERNAME` | Administrator username, usually `admin` |
+| `ADMIN_PASSWORD` | A strong private administrator password |
+| `JWT_SECRET` | A long, unique private value used to sign admin sessions |
+| `PORT` | Supplied automatically by Railway |
 
-After deployment, open:
+The project also supports `DB_URL`, `DB_USERNAME`, and `DB_PASSWORD` as environment-based datasource configuration alternatives.
+
+## Architecture
 
 ```text
-https://your-api.example/api/health
+Visitor browser
+       |
+       v
+Railway public domain
+       |
+       +-- Frontend pages and JavaScript
+       +-- Spring Boot REST API
+       +-- Railway MySQL database
 ```
 
-It should return a JSON response with `"status": "UP"`.
+Because the frontend and API use the same Railway domain, production API requests automatically use `/api` and do not need a separate frontend host or CORS configuration.
 
-## 3. Deploy the frontend
+## Verification checklist
 
-Before publishing the static files, update `api-config.js` with the live backend URL:
+After deployment, verify the following URLs:
 
-```javascript
-window.UNIVERSITY_PORTAL_API_URL = "https://your-api.example/api";
-```
+- `/` opens the public portal.
+- `/api/health` returns `status: UP`.
+- `/login.html` opens the administrator login page.
+- `/admin.html` loads after successful login.
+- A test enquiry and newsletter subscription appear in the admin dashboard.
+- A notice, course, department, or placement drive created in the admin dashboard appears on the public website.
 
-Publish the project root as the static-site directory. Do not publish the `backend/application-local.properties` file.
+## Security
 
-## 4. Set the final CORS origin
-
-After the frontend has a live URL, set `CORS_ALLOWED_ORIGINS` on the backend to that exact URL. Multiple frontend origins may be separated with commas.
-
-Restart the backend after changing environment variables.
-
-## 5. Final verification
-
-- Open the public website and submit one test enquiry.
-- Subscribe one test email address to the newsletter.
-- Sign in to `login.html` and verify the enquiry appears in the dashboard.
-- Add one notice, course, department, and placement drive; confirm each appears publicly.
-- Delete only the test entries when verification is complete.
+- Keep Railway environment variables private.
+- Do not commit `backend/application-local.properties`, `.env`, passwords, database URLs containing credentials, or JWT secrets.
+- Change the admin password if it is ever shared or exposed.
+- Only use clearly labelled demo content on the public project unless the information is verified and approved.

@@ -4,6 +4,13 @@ A full-stack university portal that brings together campus information, enquiry 
 
 The project is designed as a practical university management portal. Visitors can explore academic and campus information, while administrators can sign in to view and manage data stored in MySQL.
 
+## Live Demo
+
+- Website: [University Portal](https://university-management-system-production-dfab.up.railway.app)
+- Admin panel: [Admin Login](https://university-management-system-production-dfab.up.railway.app/login.html)
+
+The project is deployed on Railway as a single full-stack service. The frontend, Spring Boot API, and MySQL database work together through the live deployment.
+
 ## Features
 
 ### Public website
@@ -165,7 +172,9 @@ Open `indexxx.html` with Live Server in VS Code, or run it through any local sta
 
 ## Deployment
 
-The portal is ready for separate frontend and backend deployment. Follow [DEPLOYMENT.md](DEPLOYMENT.md) to configure production environment variables, CORS, the public API URL, and final verification.
+The portal is deployed on Railway with a managed MySQL database. The frontend is served by the Spring Boot application, so the website and API use the same production URL.
+
+For deployment details and environment variable guidance, see [DEPLOYMENT.md](DEPLOYMENT.md).
 
 ## Security Notes
 
@@ -177,13 +186,13 @@ The portal is ready for separate frontend and backend deployment. Follow [DEPLOY
 
 ## Current Status
 
-The portal has a complete responsive frontend and a working Spring Boot + MySQL backend for authentication, enquiries, newsletter data, notices, courses, departments, placement drives, and dashboard management. The public contact and newsletter forms are connected to the REST API, so submitted data is stored in MySQL and available in the admin dashboard. Administrators can search, view, delete, and update enquiry status, as well as publish, edit, and delete notices, courses, departments, and placement drives. Published notices, courses, departments, and placement drives appear automatically in the public website. The next enhancement is preparing a production deployment configuration.
+The project is live and ready to demonstrate. It includes a responsive frontend, Spring Boot + MySQL backend, secure administrator login, enquiry and newsletter storage, dashboard analytics, and complete management for notices, courses, departments, and placement drives. Content added from the admin dashboard appears automatically on the public website.
 
 ## Future Enhancements
 
 - Role-based access for multiple administrators
 - Email confirmations for enquiries and newsletter subscriptions
-- Deployment with environment-based production configuration
+- File uploads for notices and student resources
 
 ## Project Demo
 
