@@ -1,0 +1,5 @@
+.git
+backend/target
+backend/application-local.properties
+*.log
+*.md
